@@ -1,8 +1,28 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-  </div>
+    <h2>本周工作小结</h2>
+    <form novalidate>
+
+            <table class="report-table">
+                    <tr>
+                    <th>内容</th>  <th>计划日期</th>  <th>百分比</th>  <th>完成日期</th> <th>备注</th> <th>操作</th> 
+                    </tr>
+                    <tr>
+                    <td> <input type="text" name="" id="" value="" /> </td>  
+                    <td><input type="text" name="" id="" value="" /> </td>  
+                    <td><input type="text" name="" id="" value="" /> </td> 
+                        <td><input type="text" name="" id="" value="" /> </td>
+                        <td><input type="text" name="" id="" value="" /> </td>
+                        <td><input type="text" name="" id="" value="" /> </td> 
+                    </tr>
+            </table>
+
+      <input v-model="message" placeholder="edit me">
+      <p>Message is: {{ message }}</p>
+            
+    </form>
+    </div>
 </template>
 
 <script>
@@ -10,7 +30,8 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      message: ''
     }
   }
 }
@@ -31,5 +52,10 @@ li {
 }
 a {
   color: #42b983;
+}
+
+.report-table {
+width:1000px;
+margin:0 auto;
 }
 </style>

@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store/index'
 import 'normalize.css'
+import css from './assets/layout.less';
 
 Vue.config.productionTip = false
 
@@ -12,7 +13,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-store,
+  store,
   components: { App },
   template: '<App/>'
 })

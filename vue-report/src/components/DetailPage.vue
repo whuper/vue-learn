@@ -2,9 +2,10 @@
   <div class="detail">
     <h1>{{ msg }}</h1>
     <h2>detail</h2>
-	<p>
-	{{ $route.params.id }}
-	</p>
+	  <p>
+	    {{ $route.params.id }}
+	  </p>
+
   </div>
 </template>
 
