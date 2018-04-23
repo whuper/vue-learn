@@ -6,17 +6,51 @@
 	    {{ $route.params.id }}
 	  </p>
 
+	  <h3> {{product.title}} </h3>
+	  <p>
+	  {{product.content}}
+	  </p>
+	  <p>
+	  {{product.date}}
+	  </p>
+
   </div>
 </template>
 
 <script>
+import api from '../api/api.js'
 export default {
   name: 'DetailPage',
   data () {
     return {
-      msg: 'Welcome to DetailPage'
+      msg: 'Welcome to DetailPage',
+	product:{}
     }
-  }
+  },
+  computed: {
+      /*product () {
+        let id = parseInt(this.$route.params.id)
+        return this.getDetail(id) || {}
+      }
+	  */
+    },
+created:function(){
+			console.log(this);
+		this.getDetail(this.$route.params.id);
+		},
+methods:{
+		getDetail:function(id){			
+			const _self = this;
+			api.getNews('/news/detail/1')
+			.then(res => {
+					console.log('res',res);
+				//return res.detail;
+				_self.product = res.detail;
+				_self.msg = 'sad';
+			});
+		
+		 }
+		}
 }
 </script>
 

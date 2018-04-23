@@ -7,6 +7,9 @@ import store from './store/index'
 import 'normalize.css'
 import css from './assets/layout.less';
 
+// 引入mockjs
+require('./api/mock.js')
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
