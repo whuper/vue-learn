@@ -34,9 +34,9 @@ var newsData = Mock.mock({
 })
  
 // Mock.mock( url, post/get , 返回的数据)；
-Mock.mock('/news/list', 'post', newsData);
+Mock.mock('/news/list', 'get', newsData);
 
-Mock.mock('/news/detail/1','post', function() {
+Mock.mock('/news/detail/1','get', function() {
     return Mock.mock({
         "detail": {
             title: '@csentence(5,20)',
@@ -44,4 +44,8 @@ Mock.mock('/news/detail/1','post', function() {
 			date:'@date("yyyy-MM-dd")'
         }
     });
+});
+
+Mock.mock('/login','get',function() {
+    return 'ok'
 });

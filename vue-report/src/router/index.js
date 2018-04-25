@@ -5,20 +5,23 @@ import ListPage from '@/components/ListPage'
 import DetailPage from '@/components/DetailPage'
 import News from '@/components/News'
 import Login from '@/components/Login'
+import productListPage from '@/pages/productListPage'
+import CartPage from '@/pages/CartPage'
+import ProductPage from '@/pages/ProductPage'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
 	{
+      path: '/',
+      name: 'index',
+      component: HelloWorld
+    },
+	{
       path: '/login',
       name: 'login',
       component: Login
-    },
-    {
-      path: '/index',
-      name: 'index',
-      component: HelloWorld
     },
 	{
       path: '/list',
@@ -34,6 +37,21 @@ export default new Router({
       path: '/news/detail/:id',
       name: 'detail',
       component: DetailPage
+    },
+		{
+      path: '/productList',
+      name: 'productList',
+      component: productListPage
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: CartPage
+    },
+    {
+      path: '/product/:id',
+      name: 'product',
+      component: ProductPage
     }
   ]
 })

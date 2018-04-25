@@ -10,7 +10,6 @@
 </template>
  
 <script>
-import api from '../api/api.js'
 import NewsItem from './NewsItem.vue'
  
 export default {
@@ -28,10 +27,10 @@ export default {
   },
   methods:{
     setNewsApi: function() {
-      api.getNews('/news/list', 'type=top&key=123456')
+      this.$axios.get('/news/list')
       .then(res => {
         console.log(res);
-        this.newsListShow = res.articles;
+        this.newsListShow = res.data.articles;
       });
     },
   }

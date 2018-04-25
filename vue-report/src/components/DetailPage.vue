@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import api from '../api/api.js'
 export default {
   name: 'DetailPage',
   data () {
@@ -35,17 +34,14 @@ export default {
 	  */
     },
 created:function(){
-			console.log(this);
 		this.getDetail(this.$route.params.id);
 		},
 methods:{
 		getDetail:function(id){			
 			const _self = this;
-			api.getNews('/news/detail/1')
+			this.$axios.get('/news/detail/1')
 			.then(res => {
-					console.log('res',res);
-				//return res.detail;
-				_self.product = res.detail;
+				_self.product = res.data.detail;
 				_self.msg = 'sad';
 			});
 		

@@ -7,6 +7,9 @@ import store from './store/index'
 import 'normalize.css'
 import css from './assets/layout.less';
 
+import util from './api/util'
+Vue.use(util);
+
 // 引入mockjs
 require('./api/mock.js')
 
