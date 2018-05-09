@@ -3,14 +3,14 @@
     <h1>{{ msg }}</h1>
     <form novalidate>
 		<p>
-		<input type="text" name="name" value="" placeholder="请输入用户名">
+		<input type="text" name="name" v-model="userName" placeholder="请输入用户名">
 		</p>   
 
 			<p>
-		<input type="passwd" name="passwd" value="">
+      <input type="passwd" name="passwd" v-model="passwd" >
 		</p>  
 		<p>
-		<button class="btn" @click="doLogin">登录</button>
+		<button type="button" class="btn" @click="doLogin" :disabled="!userName || !passwd" >登录</button>
 		</p>
     
     </form>
@@ -22,7 +22,9 @@ export default {
   name: 'Login',
   data () {
     return {
-      msg: 'Welcome to login'
+      msg: 'Welcome to login',
+      userName: '',
+      passwd: ''
     }
   },
   methods:{
@@ -36,7 +38,10 @@ export default {
       }
 	  */
 	//this.getData();
-	this.$axios.get('/login').then(res => {
+	this.$axios.post('/report/login',{
+    userName: this.userName,
+    passwd: this.passwd  
+    }).then(res => {
         console.log(res.data);
       })
     }
