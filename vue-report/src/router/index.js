@@ -8,6 +8,7 @@ import Login from '@/components/Login'
 import productListPage from '@/pages/productListPage'
 import CartPage from '@/pages/CartPage'
 import ProductPage from '@/pages/ProductPage'
+import Report from '@/pages/Report'
 
 Vue.use(Router)
 
@@ -17,6 +18,11 @@ export default new Router({
       path: '/',
       name: 'index',
       component: HelloWorld
+    },
+	{
+      path: '/report',
+      name: 'report',
+      component: Report
     },
 	{
       path: '/login',

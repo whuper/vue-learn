@@ -10,16 +10,17 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
-         '/report/*': {
-         target: 'http://localhost',
+   
+    // Various Dev Server settings
+    host: 'localhost', // can be overwritten by process.env.HOST
+    port: 8090, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+		proxyTable: {
+         '/index.php': {
+				 target: 'http://localhost:80/simi',
          changeOrigin: true,
          secure: false
          }
          },
-    // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8090, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,

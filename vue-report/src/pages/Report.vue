@@ -1,7 +1,7 @@
 <template>
-  <div class="hello">
+  <div class="report">
     <h1>{{ msg }}</h1>
-    <h2>本周工作小结</h2>
+    <h2>本周工作预览</h2>
     <form novalidate>
 
             <table class="report-table">
@@ -20,30 +20,19 @@
 
       <input v-model="message" placeholder="edit me">
       <p>Message is: {{ message }}</p>
-
-				<p>
-		<button type="button" class="btn" @click="dosubmit"  >提交</button>
-		</p>
             
     </form>
     </div>
 </template>
 
 <script>
-import { mapActions,mapGetters } from 'vuex'
 export default {
-  name: 'HelloWorld',
+  name: 'Report',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
+      msg: 'Report',
       message: ''
     }
-  },
-  methods: {
-				dosubmit(){
-					console.log('##提交');				 
-						 },
-		
   }
 }
 </script>

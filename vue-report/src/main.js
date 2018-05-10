@@ -11,7 +11,7 @@ import util from './api/util'
 Vue.use(util);
 
 // 引入mockjs
-require('./api/mock.js')
+//require('./api/mock.js')
 
 Vue.config.productionTip = false
 
