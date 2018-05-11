@@ -1,20 +1,12 @@
 <template>
   <div class="menu-links">
-		<div class="toolbar">
-	<div class="user">
-		<span class=""> {{userInfo.username}}</span>
-
-
-<div v-if="userInfo.username && userInfo.username.length">
- 	<button @click="logout">退出</button>	
- 	
-</div>
-<div v-else>
-	<button @click="login">登录</button>	
-</div>
-
-
-
+		<div class="toolbar clearfix">
+					<div class="user ">
+						<span class="info"> {{userInfo.username}}</span>			
+					<button v-if="userInfo.username && userInfo.username.length" @click="logout">退出</button>	
+			
+					<button v-else @click="login">登录</button>	
+			
 	</div>
 </div>
 
@@ -22,9 +14,10 @@
     <router-link to="/index">index ({{ cartCount }})</router-link>
     <router-link to="/login">login</router-link>
     <router-link to="/report">report</router-link>
-		<h3>当前登录用户{{userInfo.username}} 购物袋 {{cartCount}}</h3>
-	<p>
+		<!--<h3>当前登录用户{{userInfo.username}} </h3>-->
+	<p v-show="false">
 	<button @click="updateinfo">更新</button>	
+	购物袋 {{cartCount}}
 	</p>
 
 	<router-link v-show="false" v-for="(link,index) in links" v-bind:key="index" v-bind:data-index="index" v-bind:to="link.path">
@@ -93,5 +86,8 @@ created:function() {
 .toolbar .user {
 float:right;
 width:200px;
+}
+.user .info {
+display:inline-block;
 }
 </style>

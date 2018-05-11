@@ -37,19 +37,6 @@ export default {
 
       //发送http请求获取，这里写死作演示
 
-
-      //实例开发中这里会向服务端请求数据
-      //如下(用了vue-resource):
-      /*ts.$http.get(url, {
-        //参数
-        "params":{}
-      }).then((response) => {
-        //Success
-      }, (response) => {
-        //Error
-      });*/
-
-			console.log('获取用户信息');
 			if(this.getCookie('userId')){
 				this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
 				console.log('## userInfo',this.userInfo);
@@ -62,7 +49,7 @@ export default {
 				console.log('### 路由变化');
 					//检查是否存在session
 					//cookie操作方法在源码里有或者参考网上的即可
-					if(!this.getCookie('userInfo')){
+					if(!this.getCookie('userId')){
 						//如果没有登录状态则跳转到登录页
 						console.log('###没有登录');
 						this.$router.push('/login');
@@ -82,9 +69,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 20px;
 }
-
 
 /* transition animate */
 .fade-enter-active, .fade-leave-active {
