@@ -1,18 +1,23 @@
 <template>
   <div class="list">
-    <h1>{{ msg }}</h1>
-    <form novalidate>
-		<p>
-		<input type="text" name="name" v-model="userId" placeholder="请输入用户名">
-		</p>   
+    <h3>{{ msg }}</h3>
+    <form novalidate class="md-layout" >
+	  <md-card class="md-layout-item md-size-50 md-small-size-100 login-box">
+        <md-card-content>
+    <md-field>
+      <label>请输入用户名</label>
+      <md-input v-model="userId"></md-input>
+    </md-field>
 
-			<p>
-      <input type="passwd" name="passwd" v-model="passwd" >
-		</p>  
-		<p>
-		<button type="button" class="btn" @click="doLogin" :disabled="!userId || !passwd" >登录</button>
-		</p>
-    
+
+       <md-field>
+      <label>密码</label>
+      <md-input v-model="passwd"></md-input>
+    </md-field>
+
+        <md-button class="md-raised md-primary" @click="doLogin" :disabled="!userId || !passwd" >登录</md-button>
+          </md-card-content>
+      </md-card>
     </form>
   </div>
 </template>

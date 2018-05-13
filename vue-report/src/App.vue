@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="page-container md-layout-column">
           <div class="header">
             <header-bar></header-bar>
           </div>

@@ -5,10 +5,28 @@ import App from './App'
 import router from './router'
 import store from './store/index'
 import 'normalize.css'
-import css from './assets/layout.less';
 
 import util from './api/util'
+
+import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.css'
+import 'vue-material/dist/theme/black-green-light.css' // This line here
+import './assets/icon.css'
+import css from './assets/layout.less';
+
 Vue.use(util);
+
+Vue.use(VueMaterial) 
+
+Vue.config.productionTip = false
+
+// 配置主题 -- 配置默认主题
+/*Vue.material.registerTheme('default',{
+  primary: 'blue',
+  accent: 'red',
+  background: 'white',
+})
+Vue.material.setCurrentTheme('default')*/
 
 // 引入mockjs
 //require('./api/mock.js')
