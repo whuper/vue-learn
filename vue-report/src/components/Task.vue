@@ -382,12 +382,10 @@ export default {
 
       let tmpItem = JSON.stringify(this.schedules[taskType][this.schedules[taskType].length - 1]);
       tmpItem = JSON.parse(tmpItem);
-
       let tmpSd = new Date(tmpItem.scheduledDate);
       if (tmpSd.getDay() != 0) {
         tmpItem.scheduledDate = this.addDate(tmpItem.scheduledDate, 1);
       }
-
       let tmpfd = new Date(tmpItem.FinishDate);
       if (tmpfd.getDay() != 0) {
         tmpItem.FinishDate = this.addDate(tmpItem.FinishDate, 1);
@@ -436,7 +434,7 @@ export default {
       }
     },
     addDate(date, days) {
-      var d = new Date(date);
+      var d = new Date(date.replace(/-/g,"/") );
       d.setDate(d.getDate() + days);
       var m = d.getMonth() + 1;
       return d.getFullYear() + "-" + m + "-" + d.getDate();
