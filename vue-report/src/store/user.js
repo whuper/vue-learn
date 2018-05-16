@@ -20,7 +20,6 @@ const actions = {
 
 const mutations = {
   updateinfo_req(state,payload) {
-		console.log('payload',payload);
     state.userInfo = payload;
   },
 	login_req(){
@@ -32,10 +31,7 @@ const mutations = {
 }
 
 const getters = {
-  usernameNew (state, getters, rootState) {
-   
-  },
-  userInfo (state) {
+  userInfo (state,getters, rootState) {
     return state.userInfo
   }
 }

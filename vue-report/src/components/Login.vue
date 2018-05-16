@@ -1,11 +1,15 @@
 <template>
   <div class="list">
-    <h3>{{ msg }}</h3>
+    <!--<h3 class="text-center">{{ msg }}</h3>-->
     <form novalidate class="md-layout" >
 	  <md-card class="md-layout-item md-size-50 md-small-size-100 login-box">
+			<md-card-header>
+          <div class="md-title text-center">用户登录</div>
+        </md-card-header>
+		
         <md-card-content>
     <md-field>
-      <label>请输入用户名</label>
+      <label>请输入用户名(工号)</label>
       <md-input v-model="userId"></md-input>
     </md-field>
 
@@ -23,18 +27,31 @@
 </template>
 
 <script>
-import Loading from './Loading.vue'
+//import Loading from './Loading.vue'
+import { mapActions,mapGetters,mapState} from 'vuex'
 export default {
   name: 'Login',
   data () {
     return {
-      msg: 'Welcome to login',
+      msg: 'Welcome to Log on',
 			isLoging: false,
       userId: '0147',
       passwd: '123456'
     }
   },
+	computed: {
+   /*...mapGetters([
+      'showSnackbar'
+    ]
+		)*/
+		...mapState([
+      'showSnackbar'
+			])
+  },
   methods:{
+	...mapActions([
+      'setShowSnackbar'
+    ]),
 	doLogin: function (event) {
     // methods 里的方法中的 `this` 指 Vue 实例
 		//console.log(this)
@@ -53,22 +70,29 @@ export default {
 			data,
 			).then(response => {
         if(response.data && response.data.userid){
-          let expireDays = 1000 * 60 * 60 * 24 * 30;
-          this.setCookie('userId',response.data.userid, expireDays);
-          this.setCookie('passWord',response.data.password, expireDays);
+          let expireHours = 24 * 30;
+          this.setCookie('userId',response.data.userid, expireHours);
+          this.setCookie('passWord',response.data.password, expireHours);
 
 					localStorage.setItem('userInfo',JSON.stringify(response.data));
 
-				//提交mutation到Store
-				this.$store.commit('updateinfo_req',response.data); 
+					//提交mutation到Store
+					this.$store.commit('updateinfo_req',response.data); 
+
           //登录成功后
-					console.log('### 登录成功');
+					
+					this.setShowSnackbar('登录成功');
+					
 					setTimeout(()=>{
 						 this.$router.push('/'); 
+						 //提交mutation到Store
+							//this.$store.commit('updateSnackBar_req',false); 
+						 this.setShowSnackbar(false);
 							},500)
          
         }
       }).catch(function (error) {
+				this.setShowSnackbar('无法登录,服务器故障..');
 					console.log(error);
 				 });
     }

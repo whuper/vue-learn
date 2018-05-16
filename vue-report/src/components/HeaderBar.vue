@@ -1,103 +1,86 @@
 <template>
   <div class="menu-links">
+    <div class="text-right" v-show="!showToolBar"> <md-button class="expand-more" @click="showToolBar = true"> <md-icon>expand_more</md-icon> 
+        </md-button>
+        </div>
 
-   <md-toolbar class="md-primary" >
+   <md-toolbar class="md-primary" v-show="showToolBar">
       <md-button class="md-icon-button" @click="showNavigation = true" v-show="userInfo.username">
         <md-icon>menu</md-icon>
       </md-button>
-      <span class="md-title">  <md-icon v-show="!userInfo.username" >sentiment_very_satisfied</md-icon> {{ userInfo.username? title :'欢迎你的到来'}} </span>
+      <span class="md-title">  <md-icon v-show="!userInfo.username" >sentiment_very_satisfied</md-icon> 
+				{{ title}} </span>
 
-  <!--     <div class="md-toolbar-section-end">
-        <md-button @click="showSidepanel = true">Favorites</md-button>
-      </div> -->
+   <div class="md-toolbar-section-end">
+        <md-button @click="showToolBar = false"> <md-icon>expand_less</md-icon> 
+        </md-button>
+      </div> 
+
     </md-toolbar>
 
     <md-drawer :md-active.sync="showNavigation">
       <md-toolbar class="md-transparent" md-elevation="0">
-        <span class="md-title"> {{userInfo.username}} </span>
+        <span class="md-title"> <md-icon>person</md-icon> {{userInfo.username}} </span>
       </md-toolbar>
 
       <md-list>
         <md-list-item>
+					  <router-link to="/report"> 
+						<md-button ><md-icon>chrome_reader_mode</md-icon>  预览 </md-button> 
+						</router-link>
          
-           <md-button ><md-icon>move_to_inbox</md-icon> 预览
-           </md-button> 
         </md-list-item> 
 
         <md-list-item>
-       
-          <md-button @click="logout" >
-          <md-icon>send</md-icon>
-          注销</md-button> 
-          
-        </md-list-item>
-
-        <md-list-item>
-   <md-button >
+				<router-link to="/">
+				 <md-button >
           <md-icon>home</md-icon>
           主页</md-button> 
+						</router-link>
           
         </md-list-item>
-        
-<!--         <md-list-item>
-     <md-icon>error</md-icon>
-        <span class="md-list-item-text">管理员</span> 
 
-        </md-list-item> -->
+				<md-list-item>
+				<router-link to="/login">
+				 <md-button >
+          <md-icon>arrow_right_alt</md-icon>
+          登录</md-button> 
+						</router-link>
+          
+        </md-list-item>
+
+				 </md-list>
+
+				  <md-list>
+
+				<md-subheader>其他</md-subheader>
+				  <md-list-item>
+            <md-button class="md-raised" @click="logout" >
+					 <md-icon>eject</md-icon>
+						 <span>注销</span>
+          </md-button> 
+        </md-list-item>
+
       </md-list>
-
+<!--
   <div class="viewport">
       <md-toolbar :md-elevation="1">
-        <span class="md-title">Full</span>
+        <span class="md-title"> <md-icon>more_horiz</md-icon></span>
       </md-toolbar>
 
       <md-list class="md-double-line">
         <md-subheader>Phone</md-subheader>
 
         <md-list-item>
-          <md-icon class="md-primary">phone</md-icon>
-
-          <div class="md-list-item-text">
-            <span>(650) 555-1234</span>
-            <span>Mobile</span>
-          </div>
-
-          <md-button class="md-icon-button md-list-action">
-            <md-icon>sms</md-icon>
-          </md-button>
+            <md-button class="md-raised" @click="logout" >
+					 <md-icon>eject</md-icon>
+						 <span>注销</span>
+          </md-button> 
         </md-list-item>
 
-        <md-list-item class="md-inset">
-          <div class="md-list-item-text">
-            <span>(650) 555-1234</span>
-            <span>Mobile</span>
-          </div>
-
-          <md-button class="md-icon-button md-list-action">
-            <md-icon>sms</md-icon>
-          </md-button>
-        </md-list-item>
-
-        <md-divider></md-divider>
-        <md-subheader>Email</md-subheader>
-
-        <md-list-item>
-          <md-icon class="md-primary">email</md-icon>
-
-          <div class="md-list-item-text">
-            <span>aliconnors@example.com</span>
-            <span>Personal</span>
-          </div>
-        </md-list-item>
-
-        <md-list-item class="md-inset">
-          <div class="md-list-item-text">
-            <span>ali_connors@example.com</span>
-            <span>Work</span>
-          </div>
-        </md-list-item>
       </md-list>
     </div>
+		-->
     </md-drawer>
 
 
@@ -130,6 +113,7 @@
 	</div>
 </div>
 
+	<!--
  <md-button>
     <router-link to="/">Home</router-link>
  </md-button>
@@ -143,41 +127,47 @@
  <md-button>
     <router-link to="/report">report</router-link>
  </md-button>
-		<!--<h3>当前登录用户{{userInfo.username}} </h3>-->
-	<p v-show="false">
-	<button @click="updateinfo">更新</button>	
-	购物袋 {{cartCount}}
-	</p>
+	<h3>当前登录用户{{userInfo.username}} </h3>
 
 	<router-link v-show="false" v-for="(link,index) in links" v-bind:key="index" v-bind:data-index="index" v-bind:to="link.path">
 	  {{link.name}}
 	  </router-link>
+		-->
 
   </div>
 </template>
 
 <script>
-import { mapActions,mapGetters } from 'vuex'
-
-import links from '@/router'
+import { mapActions,mapGetters,mapState} from 'vuex'
+// import links from '@/router'
 
 export default {
 	 data () {
     return {
-            title:'工作周报',
-            showNavigation:false
+            showNavigation:false,
+            showToolBar:true
     }
   },
   computed: {
     // mix the getters into the computed object
     ...mapGetters([
-      'cartCount',
       'userInfo'
-    ])
+    ]),
+		...mapState({
+			title: state => state.report.title
+    })
   },
 created:function() {
-	this.links = links.options.routes;
+	//this.links = links.options.routes;
 		},
+/*
+mounted:function() {
+					console.log('this.userInfo.username',this.userInfo.username);
+	if(!this.userInfo.username){
+			this.logout();
+	}	
+		},
+		*/
  methods: {
       ...mapActions([
         'updateinfo',
@@ -193,7 +183,7 @@ created:function() {
 					//成功后删除cookie
 					this.delCookie('userId');
 					this.delCookie('passWord');
-					localStorage.setItem('userInfo',null);
+					localStorage.removeItem('userInfo');
 
 					//提交mutation到Store
 					this.$store.commit('updateinfo_req',{}); 

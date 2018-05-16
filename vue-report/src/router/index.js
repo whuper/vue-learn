@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import Task from '@/components/Task'
 import ListPage from '@/components/ListPage'
 import DetailPage from '@/components/DetailPage'
 import News from '@/components/News'
@@ -17,7 +17,7 @@ export default new Router({
 	{
       path: '/',
       name: 'index',
-      component: HelloWorld
+      component: Task
     },
 	{
       path: '/report',

@@ -4,22 +4,38 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store/index'
-import 'normalize.css'
+//import 'normalize.css'
 
 import util from './api/util'
 
 import VueMaterial from 'vue-material'
+//import {MdButton, MdCard,MdIcon,MdToolbar,MdTooltip,MdLayout,MdSnackbar,MdDrawer,MdField,MdInput,MdSelect,MdProgress,MdTable,MdList,MdMenu } from 'vue-material/dist/components'
+//import { MdButton, MdContent, MdTabs} from 'vue-material/dist/components'
+
 import 'vue-material/dist/vue-material.css'
 import 'vue-material/dist/theme/black-green-light.css' // This line here
+//import 'vue-material/dist/theme/default.css'
 import './assets/icon.css'
 import css from './assets/layout.less';
 
 Vue.use(util);
 
 Vue.use(VueMaterial) 
-
-Vue.config.productionTip = false
-
+/*
+Vue.use(MdButton)
+Vue.use(MdCard)
+Vue.use(MdToolbar)
+Vue.use(MdTooltip)
+Vue.use(MdSubheader)
+Vue.use(MdSnackbar)
+Vue.use(MdDrawer)
+Vue.use(MdField)
+Vue.use(MdInput)
+Vue.use(MdSelect)
+Vue.use(MdProgress)
+Vue.use(MDtable)
+*/
+	//
 // 配置主题 -- 配置默认主题
 /*Vue.material.registerTheme('default',{
   primary: 'blue',
