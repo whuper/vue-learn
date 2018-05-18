@@ -4,16 +4,18 @@
     <form novalidate >
 
 <transition-group name="list" class="report-table md-card"  v-bind:class="{move:taskIsMoving}" tag="md-table" >
-    <md-table-toolbar key="8989">
+    <md-table-toolbar key="1515">
          <div class="md-toolbar-section-start">
         <h1 class="md-title">本周工作小结</h1>
         </div>
 
         <div class="md-toolbar-section-end">
-        	<md-button class="md-raised md-primary" @click="" > 一键完成</md-button>
+          
+          <!-- <md-button class="md-raised md-primary" @click="getSchedules" > 刷新</md-button> -->
+        	<md-button class="md-raised md-primary" @click="allDone" > 一键完成</md-button>
         </div>
       </md-table-toolbar>
-                    <md-table-row v-bind:key="88">
+                    <md-table-row v-bind:key="15">
 										<md-table-head> </md-table-head> 
                             <md-table-head>内容</md-table-head>  <md-table-head>计划日期</md-table-head>  <md-table-head>完成百分比</md-table-head>  <md-table-head>完成日期</md-table-head> <md-table-head>备注 </md-table-head> <md-table-head>操作</md-table-head>
                     </md-table-row>
@@ -28,7 +30,7 @@
                   <md-table-cell> 
 											
 										<md-field >									
-										<md-input v-model="task.title" ></md-input>
+										<md-input v-model="task.title"   ></md-input>
 									</md-field>
 									</md-table-cell>
 
@@ -52,7 +54,7 @@
                         <md-table-cell class="w-160">
                           <div class="md-layout-item">
                             <md-field>		
-													<md-select v-model="task.FinishDate" >
+													<md-select v-model="task.finishDate" >
 															<md-option v-for="(item,index2) in currentWeekDays"  :value="item.dateStr" :key="index2" >周{{item.week }}({{item.dateStr }})</md-option>
 														</md-select>
                        </md-field>	
@@ -62,7 +64,7 @@
 
                         <md-table-cell>
 																<md-field>									
-										<md-input v-model="task.remark" ></md-input>
+										<md-input v-model="task.remark"  ></md-input>
 									</md-field>
 
 												</md-table-cell>
@@ -87,31 +89,7 @@
 				</md-menu-item>
 
       </md-menu-content>
-    </md-menu>
-<!--
-		<md-speed-dial class="md-top-left" md-event="click"  md-direction="bottom">
-      <md-speed-dial-target class="md-primary">
-        <md-icon>edit</md-icon>
-      </md-speed-dial-target>
-
-      <md-speed-dial-content>
-        <md-button class="md-icon-button" @click="addTask(key)" >
-          <md-icon>add</md-icon>
-        </md-button>
-
-        <md-button class="md-icon-button"  @click="clearTask(key)" >
-          <md-icon>note</md-icon>
-        </md-button>
-				
-				 <md-button class="md-icon-button" @click="removeTask(key)" :disabled="tasks.length ==1">
-          <md-icon>delete</md-icon>
-        </md-button>
-      </md-speed-dial-content>
-
-    </md-speed-dial>
-		-->
-
-												
+    </md-menu>												
 												</md-table-cell>
 								
                        
@@ -126,27 +104,19 @@
 			<!--<md-button class="md-primary" @click="shuffle"  >反转</md-button>-->
 		</div>
 
-            <!--
-           			 <transition-group name="list" class="report-table"  v-bind:class="{move:isMoving}" tag="ul" >
+<transition-group name="list" class="report-table md-card"  v-bind:class="{move:extraIsMoving}" tag="md-table" >
 
-                            <li class="item" v-for="(task,key,index) in tasks" v-bind:key="key" v-bind:id="key" >
-                                    {{task.scheduledDate}}      </li>
-
-
-</transition-group>
-            -->
-
-<md-table name="list" class="report-table md-card"  v-bind:class="{move:extraIsMoving}">
-    <md-table-toolbar>
+<!-- <md-table name="list" class="report-table md-card"  v-bind:class="{move:extraIsMoving}"> -->
+    <md-table-toolbar key="1616">
         <h1 class="md-title">本周额外任务</h1>
       </md-table-toolbar>
-                    <md-table-row>
+                    <md-table-row key="161">
 											<md-table-head> </md-table-head> 
                             <md-table-head>内容</md-table-head>  <md-table-head>投入时间(小时)</md-table-head>  <md-table-head>完成日期</md-table-head> <md-table-head>备注 </md-table-head> <md-table-head>操作</md-table-head>
                     </md-table-row>
 
 										 
-                    <md-table-row class="item" @drop="drop($event,'extraIsMoving')" @dragover='allowDrop($event)' v-for="(task,key,index) in schedules.extratTasks" v-bind:key="key" v-bind:id="key" v-bind:class="{newItem:newItemIndex == 'extratTasks' + key}" >
+                    <md-table-row class="item" @drop="drop($event,'extraIsMoving')" @dragover='allowDrop($event)' v-for="(task,key,index) in schedules.extraTasks" v-bind:key="key" v-bind:id="key" v-bind:class="{newItem:newItemIndex == 'extraTasks' + key}" >
 										<md-table-cell class="md-table-cell "><p class="move"  draggable='true'  @dragstart="drag($event,'extraIsMoving')">
 		<md-icon>arrow_right</md-icon>
 		</p> </md-table-cell> 
@@ -160,12 +130,13 @@
                     <md-table-cell class="w-160"> 		
 												<md-field>									
 										<md-input v-model="task.hours"> </md-input>
-									</md-field></md-table-cell> 
+									</md-field>
+                  </md-table-cell> 
 
                         <md-table-cell class="w-160">
                           <div class="md-layout-item">
                             <md-field>		
-													<md-select v-model="task.FinishDate" >
+													<md-select v-model="task.finishDate" >
 															<md-option v-for="(item,index2) in currentWeekDays"  :value="item.dateStr" :key="index2" >周{{item.week }}({{item.dateStr }})</md-option>
 														</md-select>
                        </md-field>	
@@ -186,15 +157,15 @@
       </md-button>
 
             <md-menu-content>
-				  <md-menu-item @click="addTask('extratTasks',key)">
+				  <md-menu-item @click="addTask('extraTasks',key)">
 			 <md-icon>note_add</md-icon>
 			 复制
 				 <!--<md-tooltip md-direction="left">复制</md-tooltip>-->
 				</md-menu-item>
-				<md-menu-item  @click="removeTask('extratTasks',key)" v-show="schedules.extratTasks.length > 1"> <md-icon>remove</md-icon>
+				<md-menu-item  @click="removeTask('extraTasks',key)"> <md-icon>remove</md-icon>
 				移除
 				 </md-menu-item>
-        <md-menu-item @click="clearTask('extratTasks',key)" ><md-icon>delete_sweep</md-icon>
+        <md-menu-item @click="clearTask('extraTasks',key)" ><md-icon>delete_sweep</md-icon>
 				擦除			
 				</md-menu-item>
 
@@ -204,24 +175,26 @@
 												</md-table-cell>
 								
                        
-                    </md-table-row>
-										   
-						</md-table>
+                    </md-table-row>										   
+					
+            </transition-group>
 
 		<div class="action text-r">
-			<md-button class="md-raised md-primary" @click="addTask('extratTasks',null)"  >  <md-icon  >add</md-icon>
+			<md-button class="md-raised md-primary" @click="addTask('extraTasks',null)"  >  <md-icon  >add</md-icon>
       <md-tooltip md-direction="left">添加额外任务</md-tooltip>
       </md-button>
 			<!--<md-button class="md-primary" @click="shuffle"  >反转</md-button>-->
 		</div>
 
 
-	 <md-table  class="report-table md-card"  v-bind:class="{move:plansIsMoving}">
-      <md-table-toolbar>
+	 <!-- <md-table  class="report-table md-card"  v-bind:class="{move:plansIsMoving}"> -->
+<transition-group name="list" class="report-table md-card"  v-bind:class="{move:plansIsMoving}" tag="md-table" >
+
+      <md-table-toolbar key="1717">
         <h1 class="md-title">下周计划</h1>
       </md-table-toolbar>
 
-      <md-table-row>
+      <md-table-row key="171">
         <md-table-head > </md-table-head>
         <md-table-head>内容</md-table-head>
         <md-table-head>计划完成日期</md-table-head>
@@ -235,9 +208,25 @@
 		<md-icon>arrow_right</md-icon>
 		</p> </md-table-cell> 
 
-        <md-table-cell> {{plan.title}} </md-table-cell>
-        <md-table-cell> {{plan.scheduledDate}} </md-table-cell>
-        <md-table-cell>{{plan.remark}}  </md-table-cell>
+        <md-table-cell> 
+          	<md-field>									
+										<md-input v-model="plan.title" ></md-input>
+									</md-field> 
+                  </md-table-cell>
+        <md-table-cell class="w-160">
+              <div class="md-layout-item">
+                  <md-field>		
+													<md-select v-model="plan.scheduledDate" >
+															<md-option v-for="(item,index2) in nextWeekDays"  :value="item.dateStr" :key="index2" >周{{item.week }}({{item.dateStr }})</md-option>
+														</md-select>
+                       </md-field>	
+               </div>
+           </md-table-cell>
+        <md-table-cell> 
+               	<md-field>									
+										<md-input v-model="plan.remark" ></md-input>
+									</md-field> 
+           </md-table-cell>
 
         <md-table-cell>
 		 <md-menu md-size="small">
@@ -261,26 +250,21 @@
       </md-menu-content>
 
     </md-menu>
-												</md-table-cell>
-								
+	</md-table-cell>								
     
       </md-table-row>
+ </transition-group>
 
 
-    </md-table>
 		<div class="action text-r">
 			<md-button class="md-raised md-primary" @click="addTask('plans',null)" >  <md-icon >add</md-icon>
       <md-tooltip md-direction="left">添加下周计划</md-tooltip>
       </md-button>
 			<!--<md-button class="md-primary" @click="shuffle"  >反转</md-button>-->
 		</div>
-
-
-
-
-				<p class="text-center">
+    	<p class="text-center">
 	
-		  <md-button class="md-raised md-primary" @click="dosubmit" >  提交</md-button>
+		  <md-button class="md-raised md-primary"  @click="dosubmit" :disabled="isSubmiting">  提交</md-button>
 		</p>
 
             
@@ -299,15 +283,20 @@ export default {
       msg: "工作周报",
       message: "",
       currentFirstDate: "",
-      currentWeekDays: [],
       movingDom: "",
       taskIsMoving: false,
       extraIsMoving: false,
       plansIsMoving: false,
 			schedules:{},
       newItemIndex:null,
-      twinkleOut:null
+      twinkleOut:null,
+      isSubmiting:false
     };
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
   },
 	beforeRouteLeave (to, from, next) {
     // 导航离开该组件的对应路由时调用
@@ -316,42 +305,38 @@ export default {
 		next();
   },
   mounted() {
-    this.getWeekDays(new Date());
+    this.currentWeekDays = this.getWeekDays(new Date());
+
+    let nextDate = this.addDate(this.currentWeekDays[0]['dateStr'],7);   
+
+    this.nextWeekDays = this.getWeekDays(new Date(nextDate));
+
 		this.setTitle('工作周报');
-		if(this.$store.state.report.schedules.tasks.length >0){
+		if(this.$store.state.report.schedules.tasks && this.$store.state.report.schedules.tasks.length >0){
 			this.schedules = this.$store.state.report.schedules;
 			return;		
-		}
-		this.schedules = {
+    }
+    /*
+	this.schedules = {
 		tasks:[],
-		extratTasks:[],
+		extraTasks:[],
 		plans:[]
-	};
-  this.schedules.tasks = [
-      {
-        title: "本周任务1",
-        scheduledDate: this.currentWeekDays[0].dateStr,
-        percent: "50",
-        FinishDate: this.currentWeekDays[0].dateStr,
-        remark: "备注1"
-      }
-    ];
-		
-		this.schedules.extratTasks = [
-      {
-        title: "额外任务1",
-        hours: "2",
-        FinishDate: this.currentWeekDays[0].dateStr,
-        remark: "备注1"
-      }
-    ];
-    this.schedules.plans = [
-      {
-        title: "下周计划1",
-        scheduledDate: this.currentWeekDays[0].dateStr,
-        remark: "备注1"
-      }
-    ];
+  };
+  */
+this.schedules = this.getSampleData();
+
+
+/*
+    let sampleextraTasks = this.getSampleData('extraTasks');
+    this.schedules.extraTasks = [sampleextraTasks];
+    
+    let samplePlans = this.getSampleData('plans');
+    this.schedules.plans = [samplePlans];
+ */
+this.weekNumber = this.getWeekOfYear();
+
+this.getSchedules();
+
   },
   methods: {
 		...mapActions([
@@ -360,10 +345,142 @@ export default {
 			'setShowSnackbar'
     ]),
     dosubmit() {
-			this.setShowSnackbar('ok');
-			setTimeout(()=>{
+      
+      if( !this.checkForm() ){
+          return;
+      }
+     
+      return;
+      
+      if(this.schedules.extraTasks.length > 0 && this.schedules.extraTasks[0]['title']){
+        var extraTasksText = JSON.stringify(this.schedules.extraTasks);
+      } else {
+        var extraTasksText = '';
+      }
+  
+      this.isSubmiting = true;
+
+      var data = this.$qs.stringify({
+        userId: this.userInfo.userId,
+        userName:this.userInfo.username,
+        weekNumber:this.weekNumber,
+        tasks:JSON.stringify(this.schedules.tasks),
+        plans:JSON.stringify(this.schedules.plans),
+        extraTasks:extraTasksText    
+      });
+   
+      this.$axios.post('./index.php/report/postSchedules',
+			data,
+			).then(response => {
+        if(response.data.msg == 'ok'){
+
+          this.setShowSnackbar('周报已提交');
+
+          this.$router.push('/report'); 
+			    setTimeout(()=>{
 					this.setShowSnackbar(false);
 					},1200)
+               
+        } else {
+          this.setShowSnackbar(response.data.msg);
+        }
+      }).catch(function (error) {
+					console.log(error);
+				 });
+
+		
+    },
+    checkForm(){
+
+    //检查下周计划    
+    if(this.schedules.plans.length < 1){
+        	this.setShowSnackbar('请填写下周计划');		
+        return false;
+      } else {
+          this.schedules.plans.forEach(element => {
+            if(element['title'] && element['title'].replace(/(^\s*)|(\s*$)/g,"") ){
+            console.log('下周计划 ok');
+             
+            } else {
+              this.setShowSnackbar('下周计划没有填写完整');	
+              return false;
+            }
+          });
+
+      }
+    //检查本周任务
+      if(this.schedules.tasks.length < 1){
+        		this.setShowSnackbar('请填写本周任务');		
+        return false;
+      } else {
+          this.schedules.tasks.forEach(element => {
+            if(element['title'] && element['percent'] && element['title'].replace(/(^\s*)|(\s*$)/g,"")){         
+             console.log('本周任务 ok');
+            } else {
+              this.setShowSnackbar('本周工作信息不完整,请检查');       
+              document.body.scrollTop = 0;
+              document.documentElement.scrollTop = 0;
+              return false;
+
+            }
+          });
+      }
+     //检查额外任务
+     if(this.schedules.extraTasks.length > 0){
+          this.schedules.extraTasks.forEach(element => {
+            if(element['title'] && element['title'].replace(/(^\s*)|(\s*$)/g,"")){
+             
+             
+            } else {
+              this.setShowSnackbar('额外任务信息不完整,请检查'); 
+              return false;
+          
+            }
+          });
+     }
+
+     return true;
+    },
+    getSchedules(){
+ 
+      var data = this.$qs.stringify({
+        userId: this.userInfo.userId,
+        weekNumber:this.weekNumber - 1
+      });
+    	this.$axios.post('./index.php/report/getSchedules',
+			data,
+			).then(response => {
+        if(response.data){
+          this.renderData(response.data);      
+					//提交mutation到Store
+					//this.$store.commit('updateinfo_req',response.data); 
+         
+        } else {
+          this.setShowSnackbar('错误#02');
+        }
+      }).catch(function (error) {
+					console.log(error);
+				 });
+
+
+    },
+    renderData(resdata){
+      if(resdata.plans){
+           this.schedules.tasks = JSON.parse(resdata.plans);
+          this.schedules.tasks.forEach(element => {
+              element['finishDate'] = element['scheduledDate'];
+              //element['percent'] = '50';
+              if(!element['remark'] || element['remark'] == 'null'){
+                element['remark'] = ' ';
+              }
+          });
+              
+      } else {
+            let sampleTask = this.getSampleData('tasks');
+            this.schedules.tasks = [sampleTask];
+                   
+      }
+
     },
     addTask(taskType,index) {
 			if(!taskType){
@@ -380,16 +497,26 @@ export default {
         return;
       }
 
-      let tmpItem = JSON.stringify(this.schedules[taskType][this.schedules[taskType].length - 1]);
-      tmpItem = JSON.parse(tmpItem);
-      let tmpSd = new Date(tmpItem.scheduledDate);
-      if (tmpSd.getDay() != 0) {
-        tmpItem.scheduledDate = this.addDate(tmpItem.scheduledDate, 1);
+      //let tmpItem = JSON.stringify(this.schedules[taskType][this.schedules[taskType].length - 1]);
+      //tmpItem = JSON.parse(tmpItem);
+
+      let tmpItem = this.getSampleData(taskType);
+
+
+      if(tmpItem.scheduledDate){
+          let tmpSd = new Date(tmpItem.scheduledDate);
+          if (tmpSd.getDay() != 0) {
+              tmpItem.scheduledDate = this.addDate(tmpItem.scheduledDate, 1);
+          }
       }
-      let tmpfd = new Date(tmpItem.FinishDate);
-      if (tmpfd.getDay() != 0) {
-        tmpItem.FinishDate = this.addDate(tmpItem.FinishDate, 1);
+      if(tmpItem.finishDate){
+          let tmpfd = new Date(tmpItem.finishDate);
+          if (tmpfd.getDay() != 0) {
+            tmpItem.finishDate = this.addDate(tmpItem.finishDate, 1);
+          }
       }
+      tmpItem.title = '';
+      tmpItem.title
 
       this.schedules[taskType].push(tmpItem);
     },
@@ -400,16 +527,72 @@ export default {
       this.schedules[taskType].splice(index, 1);
     },
     clearTask(taskType,index) {
-      this.schedules[taskType][index].title = "";
-      this.schedules[taskType][index].percent = 50;
-      this.schedules[taskType][index].remark = "";
+      this.schedules[taskType][index].title = " ";
+      this.schedules[taskType][index].percent = null;
+      this.schedules[taskType][index].remark = " ";
+    },
+    getSampleData(type){
+
+      if(type == 'tasks'){
+        return {
+                      title: " ",
+                        scheduledDate: this.currentWeekDays[0].dateStr,
+                        percent: null,
+                        finishDate: this.currentWeekDays[0].dateStr,
+                        remark: " "
+                      }
+
+      }
+      if(type == 'plans'){
+        return {
+                  title: " ",
+                  scheduledDate: this.nextWeekDays[0].dateStr,
+                  remark: " "
+                }
+
+
+      }
+      if(type == 'extraTasks'){
+        return  {
+                  title: " ",
+                  hours: "2",
+                  finishDate: this.currentWeekDays[0].dateStr,
+                  remark: " "
+                }
+
+
+      }
+      return {
+          tasks:[
+                  {
+                      title: " ",
+                        scheduledDate: this.currentWeekDays[0].dateStr,
+                        percent: null,
+                        finishDate: this.currentWeekDays[0].dateStr,
+                        remark: " "
+                      }
+                    ],          
+          extraTasks:[
+                
+              ],
+          plans:[
+                {
+                  title: " ",
+                  scheduledDate: this.nextWeekDays[0].dateStr,
+                  remark: " "
+                }
+              ]
+          }
     },
     formatDate(date) {
       var year = date.getFullYear();
       var month = date.getMonth() + 1;
       var day = date.getDate();
       var week = ["日", "一", "二", "三", "四", "五", "六"][date.getDay()];
-
+      
+      //如果不够2位,数字前补0
+      //month = (Array(2).join('0') + month).slice(-2)
+      //day = (Array(2).join('0') + day).slice(-2)
       return {
         dateStr: year + "-" + month + "-" + day,
         week: week,
@@ -421,6 +604,8 @@ export default {
       date.setDate(date.getDate() + week * -1);
       this.currentFirstDate = new Date(date);
 
+      let weekDays = [];
+
       for (var i = 0; i < 7; i++) {
         var weekDay = "";
         if (i == 0) {
@@ -430,10 +615,25 @@ export default {
           weekDay = this.formatDate(date);
         }
 
-        this.currentWeekDays.push(weekDay);
+        weekDays.push(weekDay);
       }
+      return weekDays;
+    },    
+    getWeekOfYear() {
+      var today = new Date();
+      var firstDay = new Date(today.getFullYear(),0, 1);
+      var dayOfWeek = firstDay.getDay(); 
+      var spendDay= 1;
+      if (dayOfWeek !=0) {
+        spendDay=7-dayOfWeek+1;
+      }
+      firstDay = new Date(today.getFullYear(),0, 1+spendDay);
+      var d =Math.ceil((today.valueOf()- firstDay.valueOf())/ 86400000);
+      var result =Math.ceil(d/7);
+      return result+1;
     },
     addDate(date, days) {
+      console.log('date',date);
       var d = new Date(date.replace(/-/g,"/") );
       d.setDate(d.getDate() + days);
       var m = d.getMonth() + 1;
@@ -453,7 +653,7 @@ export default {
 					taskType = 'tasks';
 					break;
 				case 'extraIsMoving':
-					taskType = 'extratTasks';
+					taskType = 'extraTasks';
 					break;
 				case 'plansIsMoving':
 					taskType = 'plans';
@@ -506,6 +706,12 @@ export default {
        this.twinkleOut =  setTimeout(()=>{
             _this.newItemIndex = null;
         },2000);
+    },
+    allDone(){
+       this.setShowSnackbar('还没做');
+          setTimeout(()=>{
+					this.setShowSnackbar(false);
+					},1000)    
     }
   }
 };
@@ -569,12 +775,7 @@ a {
 			}
 	
 	}
-  .report-table td input {
-    //max-width: 150px;
-  }
-.report-table td.percent {
-min-width:180px;
-}
+
 
   select {
     height: 30px;

@@ -11,7 +11,7 @@
 					
     <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showSnackbar" :md-persistent="true">
 		<span>{{bMsg}}</span>
-      <md-button class="md-primary" @click="closebar">close</md-button>
+      <md-button class="md-primary md-raised" @click="closebar">忽略</md-button>
     </md-snackbar>
           </div>
 </template>
@@ -90,8 +90,9 @@ export default {
 						console.log('###没有登录');
 						this.$router.push('/login');
 					}else{
-						//否则跳转到登录后的页面
-						//this.$router.push('/report');
+					
+					let userInfo = JSON.parse(localStorage.getItem('userInfo'));				
+					this.$store.commit('updateinfo_req',userInfo);
 					}
 				},
 		closebar(){

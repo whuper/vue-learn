@@ -61,17 +61,19 @@ export default {
         alert(event.target.tagName)
       }
 	  */
-	//this.getData();
+  //this.getData();
+  this.$store.commit('updateSchedules_req',{})
+
 	var data = this.$qs.stringify({
     userId: this.userId,
     passWord: this.passwd  
     });
-	this.$axios.post('/index.php/user/login',
+	this.$axios.post('./index.php/user/login',
 			data,
 			).then(response => {
-        if(response.data && response.data.userid){
+        if(response.data && response.data.userId){
           let expireHours = 24 * 30;
-          this.setCookie('userId',response.data.userid, expireHours);
+          this.setCookie('userId',response.data.userId, expireHours);
           this.setCookie('passWord',response.data.password, expireHours);
 
 					localStorage.setItem('userInfo',JSON.stringify(response.data));
@@ -90,6 +92,8 @@ export default {
 						 this.setShowSnackbar(false);
 							},500)
          
+        } else {
+          this.setShowSnackbar('无法登录 错误#01');
         }
       }).catch(function (error) {
 				this.setShowSnackbar('无法登录,服务器故障..');

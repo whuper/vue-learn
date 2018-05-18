@@ -26,7 +26,6 @@ const actions = {
 const mutations = {
 	updateSnackBar_req(state,payload){
 			if(payload){
-				console.log(payload);
 				state.bMsg = payload;	
 				state.showSnackbar = true;	
 			} else {
