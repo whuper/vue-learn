@@ -49,6 +49,16 @@
           
         </md-list-item>
 
+				  <md-list-item>
+        <router-link to="/user">
+            <md-button class="md-raised" >
+					 <md-icon>eject</md-icon>	用户管理
+          </md-button> 
+        	</router-link>
+
+        </md-list-item>
+
+
 				 </md-list>
 
 				  <md-list>
@@ -168,7 +178,7 @@ mounted:function() {
 	}	
 		},
 		*/
- methods: {
+ methods: {                   
       ...mapActions([
         'updateinfo',
       ]),

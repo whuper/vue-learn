@@ -69,11 +69,6 @@ export default {
       msg: ''
     }
   },
-	methods:{
-	...mapActions([
-      'setTitle'
-    ])
-	},
 	mounted(){
     this.setTitle('周报预览');
   },
@@ -83,6 +78,11 @@ export default {
     ]
 		)
   },
+  methods:{
+	...mapActions([
+      'setTitle'
+    ])
+	}
 }
 </script>
 

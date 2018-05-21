@@ -31,7 +31,17 @@ var newsData = Mock.mock({
 		'author': '@cname',
 		'date':'@date("yyyy-MM-dd")'
     }]
-})
+});
+
+var users = Mock.mock({  
+    'users|5-10': [{
+        'id|+1':1,// 属性 id 是一个自增数，起始值为 1，每次增 1
+        'userId|1-100': 200,
+        'username': '@cname',
+        'email':'@email',
+        'province':'@province'
+    }]
+});
  
 // Mock.mock( url, post/get , 返回的数据)；
 Mock.mock('/news/list', 'get', newsData);
@@ -49,3 +59,8 @@ Mock.mock('/news/detail/1','get', function() {
 Mock.mock('/login','get',function() {
     return 'ok'
 });
+
+Mock.mock('/user/list', 'get', users);
+
+// 输出结果
+console.log('mock',JSON.stringify(users, null, 4))

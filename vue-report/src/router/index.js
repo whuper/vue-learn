@@ -9,7 +9,7 @@ import productListPage from '@/pages/productListPage'
 import CartPage from '@/pages/CartPage'
 import ProductPage from '@/pages/ProductPage'
 import Report from '@/pages/Report'
-
+import Users from '@/pages/Users'
 Vue.use(Router)
 
 export default new Router({
@@ -58,6 +58,12 @@ export default new Router({
       path: '/product/:id',
       name: 'product',
       component: ProductPage
-    }
+    },
+  	{
+      path: '/user',
+      name: 'user',
+      component: Users
+    },
+    
   ]
 })
