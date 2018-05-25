@@ -16,7 +16,7 @@
 
        <md-field>
       <label>密码</label>
-      <md-input v-model="passwd"></md-input>
+      <md-input type="password" v-model="passwd"></md-input>
     </md-field>
 
         <md-button class="md-raised md-primary" @click="doLogin" :disabled="!userId || !passwd" >登录</md-button>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-//import Loading from './Loading.vue'
+
 import { mapActions,mapGetters,mapState} from 'vuex'
 export default {
   name: 'Login',
@@ -64,9 +64,11 @@ export default {
   //this.getData();
   this.$store.commit('updateSchedules_req',{})
 
+  this.$store.commit('setLoading_req',true)  
+  
 	var data = this.$qs.stringify({
     userId: this.userId,
-    passWord: this.passwd  
+    password: this.passwd  
     });
 	this.$axios.post('./index.php/user/login',
 			data,
@@ -74,29 +76,30 @@ export default {
         if(response.data && response.data.userId){
           let expireHours = 24 * 30;
           this.setCookie('userId',response.data.userId, expireHours);
-          this.setCookie('passWord',response.data.password, expireHours);
+          this.setCookie('password',response.data.password, expireHours);
 
 					localStorage.setItem('userInfo',JSON.stringify(response.data));
 
 					//提交mutation到Store
 					this.$store.commit('updateinfo_req',response.data); 
-
+          this.setShowSnackbar();
           //登录成功后
 					
-					this.setShowSnackbar('登录成功');
+					//this.setShowSnackbar({bMsg:'登录成功',millisecond:800});
 					
 					setTimeout(()=>{
-						 this.$router.push('/'); 
+             this.$router.push('/'); 
+              this.$store.commit('setLoading_req',false);
 						 //提交mutation到Store
-							//this.$store.commit('updateSnackBar_req',false); 
-						 this.setShowSnackbar(false);
-							},500)
+							//this.$store.commit('updateSnackBar_req',
+							},600)
          
         } else {
-          this.setShowSnackbar('无法登录 错误#01');
+          this.$store.commit('setLoading_req',false);
+          this.setShowSnackbar({bMsg:'无法登录 密码错误#01'});
         }
       }).catch(function (error) {
-				this.setShowSnackbar('无法登录,服务器故障..');
+				this.setShowSnackbar({bmsg:'无法登录,服务器故障..'});
 					console.log(error);
 				 });
     }

@@ -3,21 +3,22 @@
     <!--<h1>{{ msg }}</h1>-->
     <form novalidate >
 
-<transition-group name="list" class="report-table md-card"  v-bind:class="{move:taskIsMoving}" tag="md-table" >
+<transition-group name="list" class="report-table md-card md-dense"  v-bind:class="{move:taskIsMoving}" tag="md-table" >
     <md-table-toolbar key="1515">
          <div class="md-toolbar-section-start">
         <h1 class="md-title">本周工作小结</h1>
+        <md-tooltip md-direction="left">{{this.weekNumber}} </md-tooltip>
         </div>
 
         <div class="md-toolbar-section-end">
           
-          <!-- <md-button class="md-raised md-primary" @click="getSchedules" > 刷新</md-button> -->
-        	<md-button class="md-raised md-primary" @click="allDone" > 一键完成</md-button>
+          <md-button class="md-raised md-primary" @click="getSchedules" > 刷新</md-button>
+        	<!-- <md-button class="md-raised md-primary" @click="allDone" > 一键完成</md-button> -->
         </div>
       </md-table-toolbar>
                     <md-table-row v-bind:key="15">
 										<md-table-head> </md-table-head> 
-                            <md-table-head>内容</md-table-head>  <md-table-head>计划日期</md-table-head>  <md-table-head>完成百分比</md-table-head>  <md-table-head>完成日期</md-table-head> <md-table-head>备注 </md-table-head> <md-table-head>操作</md-table-head>
+                            <md-table-head>内容</md-table-head>  <md-table-head>计划日期</md-table-head>  <md-table-head>百分比</md-table-head>  <md-table-head>完成日期</md-table-head> <md-table-head>备注 </md-table-head> <md-table-head>操作</md-table-head>
                     </md-table-row>
 
 										 
@@ -27,10 +28,16 @@
 										<md-icon>arrow_right</md-icon>
 										<!--{{key + 1}}-->
 		</p> </md-table-cell> 
-                  <md-table-cell> 
+
+                  <md-table-cell class="title"> 
 											
 										<md-field >									
 										<md-input v-model="task.title"   ></md-input>
+                
+                    <md-button v-show="task.title && task.title.length > 1" class="md-icon-button md-dense md-input-action md-clear" @click="clear(task)" >
+                      <md-icon>clear</md-icon>
+                    </md-button>
+
 									</md-field>
 									</md-table-cell>
 
@@ -45,10 +52,10 @@
 
                     </md-table-cell>
 
-                    <md-table-cell class="percent" > 		
+                    <md-table-cell class="w-80" > 		
 												<md-field>									
 										<!-- <md-input v-model="task.percent" ></md-input> -->
-										<input type="range" v-model.number="task.percent"> {{ task.percent }}%
+										<md-input type="number" v-model="task.percent" />
 									</md-field></md-table-cell> 
 
                         <md-table-cell class="w-160">
@@ -120,10 +127,13 @@
 										<md-table-cell class="md-table-cell "><p class="move"  draggable='true'  @dragstart="drag($event,'extraIsMoving')">
 		<md-icon>arrow_right</md-icon>
 		</p> </md-table-cell> 
-                  <md-table-cell> 
+                  <md-table-cell class="title"> 
 									
 										<md-field>									
 										<md-input v-model="task.title" ></md-input>
+                            <md-button v-show="task.title && task.title.length > 1" class="md-icon-button md-dense md-input-action md-clear" @click="clear(task)" >
+                      <md-icon>clear</md-icon>
+                    </md-button>
 									</md-field>
 									</md-table-cell>
 
@@ -188,7 +198,7 @@
 
 
 	 <!-- <md-table  class="report-table md-card"  v-bind:class="{move:plansIsMoving}"> -->
-<transition-group name="list" class="report-table md-card"  v-bind:class="{move:plansIsMoving}" tag="md-table" >
+<transition-group name="list" class="report-table plan-table md-card"  v-bind:class="{move:plansIsMoving}" tag="md-table" >
 
       <md-table-toolbar key="1717">
         <h1 class="md-title">下周计划</h1>
@@ -211,6 +221,9 @@
         <md-table-cell> 
           	<md-field>									
 										<md-input v-model="plan.title" ></md-input>
+                            <md-button v-show="plan.title && plan.title.length > 1" class="md-icon-button md-dense md-input-action md-clear" @click="clear(plan)" >
+                      <md-icon>clear</md-icon>
+                    </md-button>
 									</md-field> 
                   </md-table-cell>
         <md-table-cell class="w-160">
@@ -262,9 +275,12 @@
       </md-button>
 			<!--<md-button class="md-primary" @click="shuffle"  >反转</md-button>-->
 		</div>
+
+    <h3 v-show="isPosted" >你本周的周报已提交成功,现在可以修改</h3>
+
     	<p class="text-center">
 	
-		  <md-button class="md-raised md-primary"  @click="dosubmit" :disabled="isSubmiting">  提交</md-button>
+		  <md-button class="md-raised md-primary"  @click="dosubmit" :disabled="isSubmiting">  {{isPosted ? '修改' :'提交'}}</md-button>
 		</p>
 
             
@@ -290,7 +306,9 @@ export default {
 			schedules:{},
       newItemIndex:null,
       twinkleOut:null,
-      isSubmiting:false
+      isSubmiting:false,
+      weekNumber:0,
+      isPosted:false
     };
   },
   computed: {
@@ -350,8 +368,7 @@ this.getSchedules();
           return;
       }
      
-      return;
-      
+        
       if(this.schedules.extraTasks.length > 0 && this.schedules.extraTasks[0]['title']){
         var extraTasksText = JSON.stringify(this.schedules.extraTasks);
       } else {
@@ -362,19 +379,25 @@ this.getSchedules();
 
       var data = this.$qs.stringify({
         userId: this.userInfo.userId,
-        userName:this.userInfo.username,
+        userName:this.userInfo.userName,
         weekNumber:this.weekNumber,
         tasks:JSON.stringify(this.schedules.tasks),
         plans:JSON.stringify(this.schedules.plans),
         extraTasks:extraTasksText    
       });
+
+      if(this.isPosted){
+        let postUrl = './index.php/report/updateSchedules';
+      } else {
+        let postUrl = './index.php/report/postSchedules';
+      }
    
-      this.$axios.post('./index.php/report/postSchedules',
+      this.$axios.post(postUrl,
 			data,
 			).then(response => {
         if(response.data.msg == 'ok'){
 
-          this.setShowSnackbar('周报已提交');
+          this.setShowSnackbar({bmsg:'周报已提交'});
 
           this.$router.push('/report'); 
 			    setTimeout(()=>{
@@ -382,7 +405,7 @@ this.getSchedules();
 					},1200)
                
         } else {
-          this.setShowSnackbar(response.data.msg);
+          this.setShowSnackbar({bMsg:response.data.msg});
         }
       }).catch(function (error) {
 					console.log(error);
@@ -394,7 +417,7 @@ this.getSchedules();
 
     //检查下周计划    
     if(this.schedules.plans.length < 1){
-        	this.setShowSnackbar('请填写下周计划');		
+        	this.setShowSnackbar({bMsg:'请填写下周计划'});		
         return false;
       } else {
           this.schedules.plans.forEach(element => {
@@ -402,7 +425,7 @@ this.getSchedules();
             console.log('下周计划 ok');
              
             } else {
-              this.setShowSnackbar('下周计划没有填写完整');	
+              this.setShowSnackbar({bMsg:'下周计划没有填写完整'});	
               return false;
             }
           });
@@ -410,14 +433,14 @@ this.getSchedules();
       }
     //检查本周任务
       if(this.schedules.tasks.length < 1){
-        		this.setShowSnackbar('请填写本周任务');		
+        		this.setShowSnackbar({bMsg:'请填写本周任务'});		
         return false;
       } else {
           this.schedules.tasks.forEach(element => {
             if(element['title'] && element['percent'] && element['title'].replace(/(^\s*)|(\s*$)/g,"")){         
              console.log('本周任务 ok');
             } else {
-              this.setShowSnackbar('本周工作信息不完整,请检查');       
+              this.setShowSnackbar({bMsg:'本周工作信息不完整,请检查'});       
               document.body.scrollTop = 0;
               document.documentElement.scrollTop = 0;
               return false;
@@ -432,7 +455,7 @@ this.getSchedules();
              
              
             } else {
-              this.setShowSnackbar('额外任务信息不完整,请检查'); 
+              this.setShowSnackbar({bMsg:'额外任务信息不完整,请检查'}); 
               return false;
           
             }
@@ -445,7 +468,7 @@ this.getSchedules();
  
       var data = this.$qs.stringify({
         userId: this.userInfo.userId,
-        weekNumber:this.weekNumber - 1
+        weekNumber:this.weekNumber
       });
     	this.$axios.post('./index.php/report/getSchedules',
 			data,
@@ -456,17 +479,36 @@ this.getSchedules();
 					//this.$store.commit('updateinfo_req',response.data); 
          
         } else {
-          this.setShowSnackbar('错误#02');
+          this.setShowSnackbar({bMsg:'错误#02'});
         }
       }).catch(function (error) {
+      
 					console.log(error);
 				 });
 
 
     },
     renderData(resdata){
-      if(resdata.plans){
-           this.schedules.tasks = JSON.parse(resdata.plans);
+      //如果本周提交了
+      if(resdata.thisWeek){ 
+          this.isPosted = true;
+          this.setTitle('工作周报 (已提交)');
+          if(resdata.thisWeek.tasks.length > 1){
+              this.schedules.tasks = JSON.parse(resdata.thisWeek.tasks);       
+          }
+          if(resdata.thisWeek.plans.length > 1){
+               this.schedules.plans = JSON.parse(resdata.thisWeek.plans);
+
+          }
+          if(resdata.thisWeek.extraTasks.length > 1){
+              this.schedules.extraTasks = JSON.parse(resdata.thisWeek.extraTasks);            
+          }
+         
+
+      } else if(resdata.prevWeek){
+
+          if(resdata.prevWeek.plans){
+           this.schedules.tasks = JSON.parse(resdata.prevWeek.plans);
           this.schedules.tasks.forEach(element => {
               element['finishDate'] = element['scheduledDate'];
               //element['percent'] = '50';
@@ -475,11 +517,13 @@ this.getSchedules();
               }
           });
               
-      } else {
+          } else {
             let sampleTask = this.getSampleData('tasks');
-            this.schedules.tasks = [sampleTask];
-                   
+            this.schedules.tasks = [sampleTask];                   
+        }
+
       }
+
 
     },
     addTask(taskType,index) {
@@ -497,26 +541,27 @@ this.getSchedules();
         return;
       }
 
-      //let tmpItem = JSON.stringify(this.schedules[taskType][this.schedules[taskType].length - 1]);
-      //tmpItem = JSON.parse(tmpItem);
 
       let tmpItem = this.getSampleData(taskType);
 
+   
+      if(this.schedules[taskType] && this.schedules[taskType].length > 0){
+            let lastItem = JSON.stringify(this.schedules[taskType][this.schedules[taskType].length - 1]);
+            lastItem = JSON.parse(lastItem);
 
-      if(tmpItem.scheduledDate){
-          let tmpSd = new Date(tmpItem.scheduledDate);
-          if (tmpSd.getDay() != 0) {
-              tmpItem.scheduledDate = this.addDate(tmpItem.scheduledDate, 1);
+          if(tmpItem.scheduledDate){
+              let tmpSd = new Date(lastItem.scheduledDate);
+              if (tmpSd.getDay() != 0) {
+                  tmpItem.scheduledDate = this.addDate(lastItem.scheduledDate, 1);
+              }
+          }
+          if(tmpItem.finishDate){
+              let tmpfd = new Date(lastItem.finishDate);
+              if (tmpfd.getDay() != 0) {
+                tmpItem.finishDate = this.addDate(lastItem.finishDate, 1);
+              }
           }
       }
-      if(tmpItem.finishDate){
-          let tmpfd = new Date(tmpItem.finishDate);
-          if (tmpfd.getDay() != 0) {
-            tmpItem.finishDate = this.addDate(tmpItem.finishDate, 1);
-          }
-      }
-      tmpItem.title = '';
-      tmpItem.title
 
       this.schedules[taskType].push(tmpItem);
     },
@@ -528,7 +573,7 @@ this.getSchedules();
     },
     clearTask(taskType,index) {
       this.schedules[taskType][index].title = " ";
-      this.schedules[taskType][index].percent = null;
+      this.schedules[taskType][index].percent = 0;
       this.schedules[taskType][index].remark = " ";
     },
     getSampleData(type){
@@ -537,7 +582,7 @@ this.getSchedules();
         return {
                       title: " ",
                         scheduledDate: this.currentWeekDays[0].dateStr,
-                        percent: null,
+                        percent: 0,
                         finishDate: this.currentWeekDays[0].dateStr,
                         remark: " "
                       }
@@ -567,7 +612,7 @@ this.getSchedules();
                   {
                       title: " ",
                         scheduledDate: this.currentWeekDays[0].dateStr,
-                        percent: null,
+                        percent: 0,
                         finishDate: this.currentWeekDays[0].dateStr,
                         remark: " "
                       }
@@ -708,10 +753,11 @@ this.getSchedules();
         },2000);
     },
     allDone(){
-       this.setShowSnackbar('还没做');
-          setTimeout(()=>{
-					this.setShowSnackbar(false);
-					},1000)    
+       this.setShowSnackbar({bMsg:'还没做',millisencond:500});
+         
+    },
+    clear(item){
+      item.title = ' ';
     }
   }
 };

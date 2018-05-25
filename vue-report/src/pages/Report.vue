@@ -13,7 +13,7 @@
 
                     <md-table-cell>  {{ task.title }} </md-table-cell>
                     <md-table-cell>  {{ task.scheduledDate }} </md-table-cell> 
-                    <md-table-cell>  {{ task.percent + '%'}} </md-table-cell>
+                    <md-table-cell>  {{ task.percent ? task.percent : '0'}} %</md-table-cell>
                     <md-table-cell>  {{ task.FinishDate }} </md-table-cell>
                     <md-table-cell>  {{ task.remark }} </md-table-cell>
                    
@@ -29,7 +29,7 @@
                     <md-table-row>
                     <md-table-head>内容</md-table-head>   <md-table-head>投入时间</md-table-head> <md-table-head>完成日期</md-table-head> <md-table-head>备注</md-table-head>
                     </md-table-row>
-                   <md-table-row v-for="(task,key,index) in schedules.extratTasks" v-bind:key="key" v-bind:id="key">
+                   <md-table-row v-for="(task,key,index) in schedules.extraTasks" v-bind:key="key" v-bind:id="key">
 
                     <md-table-cell>  {{ task.title }} </md-table-cell>
                     <md-table-cell>  {{ task.hours }} 小时 </md-table-cell>

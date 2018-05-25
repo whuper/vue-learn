@@ -4,6 +4,7 @@ import cart from './cart'
 import products from './products'
 import user from './user'
 import report from './report'
+import common from './common'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     cart,
     products,
 		user,
-		report
+    report,
+    common
   }
 })

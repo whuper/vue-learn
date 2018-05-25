@@ -10,6 +10,7 @@ import CartPage from '@/pages/CartPage'
 import ProductPage from '@/pages/ProductPage'
 import Report from '@/pages/Report'
 import Users from '@/pages/Users'
+import ResetPwd from '@/pages/ResetPwd'
 Vue.use(Router)
 
 export default new Router({
@@ -63,6 +64,11 @@ export default new Router({
       path: '/user',
       name: 'user',
       component: Users
+    },
+    {
+      path: '/resetPwd',
+      name: 'resetPwd',
+      component: ResetPwd
     },
     
   ]

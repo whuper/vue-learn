@@ -8,11 +8,23 @@
 								<router-view/>
 							</transition>
           </div>
-					
-    <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showSnackbar" :md-persistent="true">
-		<span>{{bMsg}}</span>
+
+    <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="bMsg.show" :md-persistent="true">
+		<span>{{bMsg.title}}</span>
       <md-button class="md-primary md-raised" @click="closebar">忽略</md-button>
     </md-snackbar>
+
+    <md-dialog :md-active.sync="dialogAlert.active">
+      <md-dialog-title>{{dialogAlert.title}}</md-dialog-title>
+			<md-dialog-content>{{dialogAlert.content}}</md-dialog-content>
+   <md-dialog-actions>
+        <md-button class="md-raised" @click="onCancel" >{{dialogAlert.cancelText}}</md-button>
+        <md-button class="md-primary md-raised md-dense" @click="dialogAlert.onConfirm" >{{dialogAlert.confirmText}}</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+
+ <md-progress-bar class="md-accent md-primary" md-mode="indeterminate" v-if="loading"></md-progress-bar>
+
           </div>
 </template>
 
@@ -33,7 +45,6 @@ export default {
   watch:{
     //"$route" : 'checkLogin'
     $route(){
-			console.log('路由改变');
      this.checkLogin();
     }
   },
@@ -60,7 +71,9 @@ export default {
 		},	
 		// 'showSnackbar': state => state.report.showSnackbar
 		...mapState({
-      'bMsg': state => state.report.bMsg
+			'bMsg': state => state.common.bMsg,
+			'loading':state => state.common.loading,
+			'dialogAlert': state => state.common.dialogAlert
 			})
 			
   },
@@ -82,7 +95,10 @@ export default {
 				this.$router.push('/login');
 			}
      
-    },
+		},
+		onCancel:function(){
+			this.$store.commit('dialogAlert_req');
+		},
 		checkLogin(){
 					//检查是否存在cookie
 					if(!this.getCookie('userId') || !localStorage.getItem('userInfo') ){

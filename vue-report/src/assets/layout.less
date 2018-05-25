@@ -40,6 +40,12 @@ margin:0 auto;
 	.md-table-cell-container {
 	padding:5px;
 	}
+	.title {
+		.md-table-cell-container {			
+			min-width: 270px;
+		}
+		
+		}
 	
 	.w-200 {
 			.md-table-cell-container {
@@ -66,10 +72,23 @@ margin:0 auto;
 			width: 100px;
 		}
 	}
+	.w-80 {
+		.md-table-cell-container {
+		width: 80px;
+		.md-input {
+
+			width: 80px;
+		}
+	}
+	}
 	.w-50 {
 		.md-table-cell-container {
 		width: 50px;
+		.md-input {
+			width: 50px;
+		}
 	}
+	
 		
 	}
 	
@@ -88,7 +107,7 @@ margin:0 auto;
 
 }
 .login-box {
- margin:0 auto;   
+ margin:30px auto;   
 }
 .ma {
 margin:0 auto;
@@ -110,7 +129,13 @@ div.md-menu-content {
 
 div.md-menu-content.md-select-menu {
 		width:auto;
+		z-index:1000;
 	}
+div.md-menu-content{
+	
+		z-index:1000;
+	}
+
 .md-list-item-content>.md-icon:first-child {
 margin-right:10px;
 }
@@ -121,7 +146,7 @@ margin-right:10px;
 100% {background: #aaa;}
 }
 .page-container {
-margin-bottom:100px;
+padding-bottom:100px;
 
 }
 
@@ -130,6 +155,26 @@ font-size:inherit;
 
 }
 .report-table td.percent {
-	min-width:180px;
+	width:80px;
 	}
-	
+.report-table td.percent	.md-table-cell-container {
+	width:80px;
+
+}
+.md-progress-bar {
+	position: absolute;
+	top: 70px;
+	right: 0;
+	left: 0;
+	}
+.mh {
+min-height:100px;
+
+}
+.md-layout.md-gutter {
+margin:0;
+}
+.plan-table .md-table-cell.w-160 {
+	width:160px;
+
+}

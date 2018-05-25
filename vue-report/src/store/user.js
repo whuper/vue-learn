@@ -2,7 +2,7 @@
 const state = {
 	id:'',
 	userInfo:{
-		username:''
+		userName:''
 	}
 }
 

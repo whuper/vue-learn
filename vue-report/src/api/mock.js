@@ -34,10 +34,10 @@ var newsData = Mock.mock({
 });
 
 var users = Mock.mock({  
-    'users|5-10': [{
+    'users|5-20': [{
         'id|+1':1,// 属性 id 是一个自增数，起始值为 1，每次增 1
         'userId|1-100': 200,
-        'username': '@cname',
+        'userName': '@cname',
         'email':'@email',
         'province':'@province'
     }]
@@ -63,4 +63,4 @@ Mock.mock('/login','get',function() {
 Mock.mock('/user/list', 'get', users);
 
 // 输出结果
-console.log('mock',JSON.stringify(users, null, 4))
+//console.log('mock',JSON.stringify(users, null, 4))
