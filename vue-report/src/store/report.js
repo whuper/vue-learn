@@ -3,7 +3,9 @@ const state = {
 		tasks:[],
 		extratTasks:[],
 		plans:[]
-	}
+	},
+	isPosted:false,
+	weekNumber:0
 }
 
 const actions = {
@@ -17,6 +19,12 @@ const actions = {
 const mutations = {
 	updateSchedules_req(state,payload){
 			state.schedules = payload;	
+	},
+	updatePostStatus_req(state,payload){
+		state.isPosted = payload;	
+	},
+	updateWeekNumber_req(state,payload){
+		state.weekNumber = payload;	
 	}
 
 }

@@ -9,12 +9,12 @@
                     <md-table-row>
                     <md-table-head>内容</md-table-head>  <md-table-head>计划日期</md-table-head> <md-table-head>完成百分比</md-table-head> <md-table-head>完成日期</md-table-head> <md-table-head>备注</md-table-head>
                     </md-table-row>
-                   <md-table-row v-for="(task,key,index) in schedules.tasks" v-bind:key="key" v-bind:id="key">
+                   <md-table-row v-for="(task,key) in schedules.tasks" v-bind:key="key" >
 
                     <md-table-cell>  {{ task.title }} </md-table-cell>
                     <md-table-cell>  {{ task.scheduledDate }} </md-table-cell> 
                     <md-table-cell>  {{ task.percent ? task.percent : '0'}} %</md-table-cell>
-                    <md-table-cell>  {{ task.FinishDate }} </md-table-cell>
+                    <md-table-cell>  {{ task.finishDate }} </md-table-cell>
                     <md-table-cell>  {{ task.remark }} </md-table-cell>
                    
                     </md-table-row>
@@ -29,11 +29,11 @@
                     <md-table-row>
                     <md-table-head>内容</md-table-head>   <md-table-head>投入时间</md-table-head> <md-table-head>完成日期</md-table-head> <md-table-head>备注</md-table-head>
                     </md-table-row>
-                   <md-table-row v-for="(task,key,index) in schedules.extraTasks" v-bind:key="key" v-bind:id="key">
+                   <md-table-row v-for="(task,key) in schedules.extraTasks" v-bind:key="key" >
 
                     <md-table-cell>  {{ task.title }} </md-table-cell>
                     <md-table-cell>  {{ task.hours }} 小时 </md-table-cell>
-                    <md-table-cell>  {{ task.FinishDate }} </md-table-cell>
+                    <md-table-cell>  {{ task.finishDate }} </md-table-cell>
                     <md-table-cell>  {{ task.remark }} </md-table-cell>
                    
                     </md-table-row>
@@ -47,7 +47,7 @@
                     <md-table-row>
                     <md-table-head>内容</md-table-head>  <md-table-head>计划完成日期</md-table-head> <md-table-head>备注</md-table-head>
                     </md-table-row>
-                   <md-table-row v-for="(plan,key,index) in schedules.plans" v-bind:key="key" v-bind:id="key">
+                   <md-table-row v-for="(plan,key) in schedules.plans" v-bind:key="key" >
 
                     <md-table-cell>  {{ plan.title }} </md-table-cell>
                     <md-table-cell>  {{ plan.scheduledDate }} </md-table-cell>
@@ -70,11 +70,12 @@ export default {
     }
   },
 	mounted(){
-    this.setTitle('周报预览');
+    this.setTitle('周报预览(' + this.userInfo.userName + ')');
   },
 	computed: {
    ...mapGetters([
-      'schedules'
+      'schedules',
+      'userInfo'
     ]
 		)
   },

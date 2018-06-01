@@ -22,7 +22,7 @@
                     </md-table-row>
 
 										 
-                    <md-table-row class="item " v-bind:class="{newItem:newItemIndex == 'tasks' + key}"  @drop="drop($event,'taskIsMoving')" @dragover="allowDrop($event,'taskIsMoving')" v-for="(task,key,index) in schedules.tasks" v-bind:key="key" v-bind:id="key" >
+                    <md-table-row class="item " v-bind:class="{newItem:newItemIndex == 'tasks' + key}"  @drop="drop($event,'taskIsMoving')" @dragover="allowDrop($event,'taskIsMoving')" v-for="(task,key) in schedules.tasks" v-bind:key="key" v-bind:id="key" >
 
 										<md-table-cell class="md-table-cell w-50"><p class="move"  draggable='true'  @dragstart="drag($event,'taskIsMoving')">
 										<md-icon>arrow_right</md-icon>
@@ -44,7 +44,7 @@
                     <md-table-cell class="w-160">
 											 <div class="md-layout-item">
                             <md-field>		
-                              <md-select v-model="task.scheduledDate" >
+                              <md-select md-dense v-model="task.scheduledDate" >
 															<md-option v-for="(item,index2) in currentWeekDays"  :value="item.dateStr" :key="index2" >周{{item.week }}({{item.dateStr }})</md-option>
 												</md-select>
                        </md-field>	
@@ -52,16 +52,24 @@
 
                     </md-table-cell>
 
-                    <md-table-cell class="w-80" > 		
+                    <md-table-cell class="w-80 bl" > 		
 												<md-field>									
-										<!-- <md-input v-model="task.percent" ></md-input> -->
-										<md-input type="number" v-model="task.percent" />
-									</md-field></md-table-cell> 
+				<!-- 					 <md-input v-model="task.percent" ></md-input> 
+										<md-input type="text" v-model="task.percent" /> <span class="md-suffix">%</span> -->
+
+                            <md-select md-dense v-model="task.percent" >
+															<md-option v-for="(item,key) in percentList"  :value="item" :key="key" >{{item}}%</md-option>
+												</md-select>
+
+               
+									</md-field>
+                  
+                  </md-table-cell> 
 
                         <md-table-cell class="w-160">
                           <div class="md-layout-item">
                             <md-field>		
-													<md-select v-model="task.finishDate" >
+													<md-select v-model="task.finishDate" md-dense  >
 															<md-option v-for="(item,index2) in currentWeekDays"  :value="item.dateStr" :key="index2" >周{{item.week }}({{item.dateStr }})</md-option>
 														</md-select>
                        </md-field>	
@@ -76,7 +84,7 @@
 
 												</md-table-cell>
                         <md-table-cell>
-		 <md-menu md-size="small">
+		 <md-menu md-size="small" md-dense>
       <md-button class="md-icon-button" md-menu-trigger >
         <md-icon>more_vert</md-icon>
       </md-button>
@@ -90,7 +98,7 @@
 				<md-menu-item  @click="removeTask('tasks',key)" v-show="schedules.tasks.length > 1"> <md-icon>remove</md-icon>
 				移除
 				 </md-menu-item>
-        <md-menu-item @click="clearTask('tasks',key)" ><md-icon>delete_sweep</md-icon>
+        <md-menu-item v-show="false" @click="clearTask('tasks',key)" ><md-icon>delete_sweep</md-icon>
 				擦除
 			
 				</md-menu-item>
@@ -123,7 +131,7 @@
                     </md-table-row>
 
 										 
-                    <md-table-row class="item" @drop="drop($event,'extraIsMoving')" @dragover='allowDrop($event)' v-for="(task,key,index) in schedules.extraTasks" v-bind:key="key" v-bind:id="key" v-bind:class="{newItem:newItemIndex == 'extraTasks' + key}" >
+                    <md-table-row class="item" @drop="drop($event,'extraIsMoving')" @dragover='allowDrop($event)' v-for="(task,key) in schedules.extraTasks" v-bind:key="key" v-bind:id="key" v-bind:class="{newItem:newItemIndex == 'extraTasks' + key}" >
 										<md-table-cell class="md-table-cell "><p class="move"  draggable='true'  @dragstart="drag($event,'extraIsMoving')">
 		<md-icon>arrow_right</md-icon>
 		</p> </md-table-cell> 
@@ -146,7 +154,7 @@
                         <md-table-cell class="w-160">
                           <div class="md-layout-item">
                             <md-field>		
-													<md-select v-model="task.finishDate" >
+													<md-select v-model="task.finishDate" md-dense  >
 															<md-option v-for="(item,index2) in currentWeekDays"  :value="item.dateStr" :key="index2" >周{{item.week }}({{item.dateStr }})</md-option>
 														</md-select>
                        </md-field>	
@@ -161,7 +169,7 @@
 
 												</md-table-cell>
                         <md-table-cell>
-		 <md-menu md-size="small">
+		 <md-menu md-size="small" md-dense>
       <md-button class="md-icon-button" md-menu-trigger >
         <md-icon>more_vert</md-icon>
       </md-button>
@@ -175,7 +183,7 @@
 				<md-menu-item  @click="removeTask('extraTasks',key)"> <md-icon>remove</md-icon>
 				移除
 				 </md-menu-item>
-        <md-menu-item @click="clearTask('extraTasks',key)" ><md-icon>delete_sweep</md-icon>
+        <md-menu-item v-show="false" @click="clearTask('extraTasks',key)" ><md-icon>delete_sweep</md-icon>
 				擦除			
 				</md-menu-item>
 
@@ -213,7 +221,7 @@
        
       </md-table-row>
 
-       <md-table-row class="item" @drop="drop($event,'plansIsMoving')" @dragover='allowDrop($event)' v-for="(plan,key,index) in schedules.plans" v-bind:key="key" v-bind:id="key" v-bind:class="{newItem:newItemIndex == 'plans' + key}" >
+       <md-table-row class="item" @drop="drop($event,'plansIsMoving')" @dragover='allowDrop($event)' v-for="(plan,key) in schedules.plans" v-bind:key="key" v-bind:id="key" v-bind:class="{newItem:newItemIndex == 'plans' + key}" >
 										<md-table-cell class="md-table-cell "><p class="move"  draggable='true'  @dragstart="drag($event,'plansIsMoving')">
 		<md-icon>arrow_right</md-icon>
 		</p> </md-table-cell> 
@@ -229,7 +237,7 @@
         <md-table-cell class="w-160">
               <div class="md-layout-item">
                   <md-field>		
-													<md-select v-model="plan.scheduledDate" >
+													<md-select v-model="plan.scheduledDate" md-dense >
 															<md-option v-for="(item,index2) in nextWeekDays"  :value="item.dateStr" :key="index2" >周{{item.week }}({{item.dateStr }})</md-option>
 														</md-select>
                        </md-field>	
@@ -242,7 +250,7 @@
            </md-table-cell>
 
         <md-table-cell>
-		 <md-menu md-size="small">
+		 <md-menu md-size="small" md-dense>
       <md-button class="md-icon-button" md-menu-trigger >
         <md-icon>more_vert</md-icon>
       </md-button>
@@ -256,7 +264,7 @@
 				<md-menu-item  @click="removeTask('plans',key)" v-show="schedules.plans.length > 1"> <md-icon>remove</md-icon>
 				移除
 				 </md-menu-item>
-        <md-menu-item @click="clearTask('plans',key)" ><md-icon>delete_sweep</md-icon>
+        <md-menu-item v-show="false" @click="clearTask('plans',key)" ><md-icon>delete_sweep</md-icon>
 				擦除			
 				</md-menu-item>
 
@@ -276,15 +284,30 @@
 			<!--<md-button class="md-primary" @click="shuffle"  >反转</md-button>-->
 		</div>
 
+<div class="mh-30">
+  <md-progress-bar md-mode="indeterminate" v-if="isSubmiting" />
+</div>
+       
+
+
     <h3 v-show="isPosted" >你本周的周报已提交成功,现在可以修改</h3>
 
     	<p class="text-center">
 	
-		  <md-button class="md-raised md-primary"  @click="dosubmit" :disabled="isSubmiting">  {{isPosted ? '修改' :'提交'}}</md-button>
+		  <md-button class="md-raised md-primary"  @click="checkForm()" :disabled="isSubmiting">  {{isPosted ? '修改' :'提交'}}</md-button>
 		</p>
 
             
     </form>
+
+   <md-dialog-confirm
+      :md-active.sync="showConfirm"
+      md-title="你确定要提交周报吗?"
+     md-content="请仔细检查,确认无误后,再提交"
+      md-confirm-text="提交"
+      md-cancel-text="预览周报"
+      @md-cancel="onCancel"
+      @md-confirm="onConfirm" />
 
     </div>
 </template>
@@ -307,14 +330,26 @@ export default {
       newItemIndex:null,
       twinkleOut:null,
       isSubmiting:false,
-      weekNumber:0,
-      isPosted:false
+      showConfirm:false,
+      percentList:[100,90,80,70,60,0,50,40,30,20,10]
+      //percentList:[0,10,20,30,40,50,60,70,80,90,100]
+      //weekNumber:0,
+      //isPosted:false
     };
   },
   computed: {
     ...mapGetters([
       'userInfo'
-    ])
+    ]),
+    ...mapState({
+      'isPosted':state => state.report.isPosted,
+      'weekNumber':state => state.report.weekNumber
+    })
+    /*
+    weekNumber:function () { 
+      return this.getWeekOfYear()
+    }
+    */
   },
 	beforeRouteLeave (to, from, next) {
     // 导航离开该组件的对应路由时调用
@@ -329,7 +364,12 @@ export default {
 
     this.nextWeekDays = this.getWeekDays(new Date(nextDate));
 
-		this.setTitle('工作周报');
+   
+    if(this.isPosted){
+       this.setTitle('工作周报 (已提交)');
+    } else {
+      this.setTitle('工作周报');
+    }
 		if(this.$store.state.report.schedules.tasks && this.$store.state.report.schedules.tasks.length >0){
 			this.schedules = this.$store.state.report.schedules;
 			return;		
@@ -351,7 +391,7 @@ this.schedules = this.getSampleData();
     let samplePlans = this.getSampleData('plans');
     this.schedules.plans = [samplePlans];
  */
-this.weekNumber = this.getWeekOfYear();
+//this.weekNumber = this.getWeekOfYear();
 
 this.getSchedules();
 
@@ -363,12 +403,8 @@ this.getSchedules();
 			'setShowSnackbar'
     ]),
     dosubmit() {
-      
-      if( !this.checkForm() ){
-          return;
-      }
-     
-        
+
+         
       if(this.schedules.extraTasks.length > 0 && this.schedules.extraTasks[0]['title']){
         var extraTasksText = JSON.stringify(this.schedules.extraTasks);
       } else {
@@ -380,91 +416,136 @@ this.getSchedules();
       var data = this.$qs.stringify({
         userId: this.userInfo.userId,
         userName:this.userInfo.userName,
+        team:this.userInfo.team,
+        department:this.userInfo.department,
         weekNumber:this.weekNumber,
         tasks:JSON.stringify(this.schedules.tasks),
         plans:JSON.stringify(this.schedules.plans),
         extraTasks:extraTasksText    
       });
-
+      var postUrl = ''; 
       if(this.isPosted){
-        let postUrl = './index.php/report/updateSchedules';
+        postUrl = './index.php/report/updateSchedules';
       } else {
-        let postUrl = './index.php/report/postSchedules';
+        postUrl = './index.php/report/postSchedules';
       }
    
       this.$axios.post(postUrl,
 			data,
 			).then(response => {
-        if(response.data.msg == 'ok'){
+        if(response.data.ok == true){
+          this.$store.commit('updatePostStatus_req',true);
 
-          this.setShowSnackbar({bmsg:'周报已提交'});
+          this.setShowSnackbar({bMsg:response.data.msg,millisecond:1200});
 
           this.$router.push('/report'); 
-			    setTimeout(()=>{
+		/* 	    setTimeout(()=>{
 					this.setShowSnackbar(false);
-					},1200)
+					},1200) */
                
         } else {
-          this.setShowSnackbar({bMsg:response.data.msg});
+          this.setShowSnackbar({bMsg:response.data.msg,millisecond:1200});
         }
+        this.isSubmiting = false;
       }).catch(function (error) {
+        this.isSubmiting = false;
 					console.log(error);
 				 });
-
 		
+    },
+    onCancel(){
+      this.showConfirm = false;
+     this.$router.push('/report');
+    },
+    onConfirm(){
+      this.showConfirm = false;
+     this.dosubmit();
     },
     checkForm(){
 
-    //检查下周计划    
+    //检查下周计划
+
+    let promise1 = new Promise ( (resolve, reject) => {
+    // begin
     if(this.schedules.plans.length < 1){
         	this.setShowSnackbar({bMsg:'请填写下周计划'});		
-        return false;
+          reject();
       } else {
           this.schedules.plans.forEach(element => {
-            if(element['title'] && element['title'].replace(/(^\s*)|(\s*$)/g,"") ){
-            console.log('下周计划 ok');
-             
+            if(element['title'] && element['title'].replace(/(^\s*)|(\s*$)/g,"") ){           
+              resolve('resolve3');
             } else {
               this.setShowSnackbar({bMsg:'下周计划没有填写完整'});	
-              return false;
+              reject('reject3');
             }
           });
-
       }
+      // end --
+    } )
+
     //检查本周任务
+
+    let promise2 = new Promise ( (resolve, reject) => {
+    // begin
+    
       if(this.schedules.tasks.length < 1){
         		this.setShowSnackbar({bMsg:'请填写本周任务'});		
-        return false;
+            reject('reject4')
       } else {
           this.schedules.tasks.forEach(element => {
-            if(element['title'] && element['percent'] && element['title'].replace(/(^\s*)|(\s*$)/g,"")){         
-             console.log('本周任务 ok');
+            if(element['title'] && element['percent'] && element['title'].replace(/(^\s*)|(\s*$)/g,"")){         resolve('resolve4');
+              
             } else {
               this.setShowSnackbar({bMsg:'本周工作信息不完整,请检查'});       
               document.body.scrollTop = 0;
               document.documentElement.scrollTop = 0;
-              return false;
+              reject('reject4')
 
             }
           });
       }
+      // end --
+    } )
+
      //检查额外任务
+    let promise3 = new Promise ( (resolve, reject) => {
+    // begin        
      if(this.schedules.extraTasks.length > 0){
           this.schedules.extraTasks.forEach(element => {
             if(element['title'] && element['title'].replace(/(^\s*)|(\s*$)/g,"")){
              
-             
+              resolve('resolve5');
             } else {
               this.setShowSnackbar({bMsg:'额外任务信息不完整,请检查'}); 
-              return false;
+              reject('reject5');
           
             }
           });
+     } else {
+       resolve('resolve56');
      }
 
-     return true;
+      // end --
+    } )
+
+      var promiseAll = Promise.all( [promise1, promise2, promise3] );
+
+      promiseAll.then((res)=>{
+        console.log('res',res);  
+          //this.dosubmit();
+          this.showConfirm = true;
+      }  
+      ).catch(function(e) {
+        console.log('e3',e);   
+
+      }
+
+      )
+          
     },
     getSchedules(){
+
+      this.$store.commit('setLoading_req',true)
  
       var data = this.$qs.stringify({
         userId: this.userInfo.userId,
@@ -473,6 +554,7 @@ this.getSchedules();
     	this.$axios.post('./index.php/report/getSchedules',
 			data,
 			).then(response => {
+        this.$store.commit('setLoading_req',false) 
         if(response.data){
           this.renderData(response.data);      
 					//提交mutation到Store
@@ -482,7 +564,7 @@ this.getSchedules();
           this.setShowSnackbar({bMsg:'错误#02'});
         }
       }).catch(function (error) {
-      
+      this.$store.commit('setLoading_req',false) 
 					console.log(error);
 				 });
 
@@ -491,8 +573,10 @@ this.getSchedules();
     renderData(resdata){
       //如果本周提交了
       if(resdata.thisWeek){ 
-          this.isPosted = true;
+          //this.isPosted = true;
           this.setTitle('工作周报 (已提交)');
+          this.$store.commit('updatePostStatus_req',true);
+
           if(resdata.thisWeek.tasks.length > 1){
               this.schedules.tasks = JSON.parse(resdata.thisWeek.tasks);       
           }
@@ -510,8 +594,13 @@ this.getSchedules();
           if(resdata.prevWeek.plans){
            this.schedules.tasks = JSON.parse(resdata.prevWeek.plans);
           this.schedules.tasks.forEach(element => {
+              element['scheduledDate'] = element['scheduledDate'];
               element['finishDate'] = element['scheduledDate'];
-              //element['percent'] = '50';
+              if(!element['percent'] || !element['percent'].length){
+                element['percent'] = 0;
+
+              }
+              
               if(!element['remark'] || element['remark'] == 'null'){
                 element['remark'] = ' ';
               }

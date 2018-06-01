@@ -23,7 +23,7 @@
       </md-dialog-actions>
     </md-dialog>
 
- <md-progress-bar class="md-accent md-primary" md-mode="indeterminate" v-if="loading"></md-progress-bar>
+ <md-progress-bar class="md-accent md-primary global" md-mode="indeterminate" v-if="loading"></md-progress-bar>
 
           </div>
 </template>
@@ -50,11 +50,13 @@ export default {
   },
 	mounted(){
     //组件开始挂载时获取用户信息
-    this.getUserInfo();
+		this.getUserInfo();
+		
   },
   //进入页面时
   created() {
-    this.checkLogin();
+		this.checkLogin();
+		this.setData();
   },	
 	computed: {
     /*...mapGetters([
@@ -88,7 +90,7 @@ export default {
 
 			if(this.getCookie('userId')){
 				this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
-				console.log('## userInfo',this.userInfo);
+
 				 //提交mutation到Store
 				this.$store.commit('updateinfo_req',this.userInfo); 
 			} else {			
@@ -96,6 +98,25 @@ export default {
 			}
      
 		},
+		setData(){
+			var weekNumber = this.getWeekOfYear();
+			console.log('weekNumber',weekNumber);
+			
+			this.$store.commit('updateWeekNumber_req',weekNumber); 
+		},
+		getWeekOfYear() {
+      var today = new Date();
+      var firstDay = new Date(today.getFullYear(),0, 1);
+      var dayOfWeek = firstDay.getDay(); 
+      var spendDay= 1;
+      if (dayOfWeek !=0) {
+        spendDay=7-dayOfWeek+1;
+      }
+      firstDay = new Date(today.getFullYear(),0, 1+spendDay);
+      var d =Math.ceil((today.valueOf()- firstDay.valueOf())/ 86400000);
+      var result =Math.ceil(d/7);
+      return result+1;
+    },
 		onCancel:function(){
 			this.$store.commit('dialogAlert_req');
 		},
@@ -103,7 +124,7 @@ export default {
 					//检查是否存在cookie
 					if(!this.getCookie('userId') || !localStorage.getItem('userInfo') ){
 						//如果没有登录状态则跳转到登录页
-						console.log('###没有登录');
+				
 						this.$router.push('/login');
 					}else{
 					

@@ -1,16 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Task from '@/components/Task'
-import ListPage from '@/components/ListPage'
-import DetailPage from '@/components/DetailPage'
-import News from '@/components/News'
+//import ListPage from '@/components/ListPage'
+//import DetailPage from '@/components/DetailPage'
+//import News from '@/components/News'
 import Login from '@/components/Login'
-import productListPage from '@/pages/productListPage'
-import CartPage from '@/pages/CartPage'
-import ProductPage from '@/pages/ProductPage'
+//import productListPage from '@/pages/productListPage'
+//import CartPage from '@/pages/CartPage'
+//import ProductPage from '@/pages/ProductPage'
 import Report from '@/pages/Report'
 import Users from '@/pages/Users'
 import ResetPwd from '@/pages/ResetPwd'
+import AllReport from '@/pages/AllReport'
 Vue.use(Router)
 
 export default new Router({
@@ -30,7 +31,7 @@ export default new Router({
       name: 'login',
       component: Login
     },
-	{
+	/* {
       path: '/list',
       name: 'list',
       component: ListPage
@@ -59,7 +60,7 @@ export default new Router({
       path: '/product/:id',
       name: 'product',
       component: ProductPage
-    },
+    }, */
   	{
       path: '/user',
       name: 'user',
@@ -70,6 +71,11 @@ export default new Router({
       name: 'resetPwd',
       component: ResetPwd
     },
+    {
+      path: '/allReport',
+      name: 'allReport',
+      component: AllReport
+    }
     
   ]
 })

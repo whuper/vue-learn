@@ -49,16 +49,6 @@
 						</router-link>          
         </md-list-item> 
 
-<!-- 				<md-list-item>
-				<router-link to="/login">
-				 <md-button >
-          <md-icon>arrow_right_alt</md-icon>
-          登录</md-button> 
-						</router-link>          
-        </md-list-item> -->
-
-
-
 				 </md-list>
 
 				  <md-list>
@@ -76,7 +66,7 @@
         </md-list-item>
 
 				<md-list-item v-if="userInfo.role == 6">
-        <router-link to="/user">
+        <router-link to="/allReport">
             <md-button class="md-raised" >
 					 <md-icon>list</md-icon>所有周报
           </md-button> 
@@ -92,32 +82,14 @@
         </md-list-item>
 
       </md-list>
-<!--
-  <div class="viewport">
-      <md-toolbar :md-elevation="1">
-        <span class="md-title"> <md-icon>more_horiz</md-icon></span>
-      </md-toolbar>
 
-      <md-list class="md-double-line">
-        <md-subheader>Phone</md-subheader>
-
-        <md-list-item>
-            <md-button class="md-raised" @click="logout" >
-					 <md-icon>eject</md-icon>
-						 <span>注销</span>
-          </md-button> 
-        </md-list-item>
-
-      </md-list>
-    </div>
-		-->
     </md-drawer>
 
 
 <!--     <md-toolbar>
       <h3 class="md-title" style="flex: 1">{{ title}}</h3>
   
-    <md-menu md-size="small" md-align-trigger v-if="userInfo.userName && userInfo.userName.length" >
+    <md-menu md-size="small" md-align-trigger v-if=".userName && userInfo.userName.length" >
       <md-button md-menu-trigger> {{userInfo.userName}} </md-button>
 
       <md-menu-content>
@@ -135,11 +107,7 @@
     </md-toolbar> -->
 		<div class="toolbar clearfix">
 					<div class="user ">
-						<span class="info"> </span>			
-					<!--<button v-if="userInfo.userName && userInfo.userName.length" @click="logout">退出</button>				
-					<button v-else @click="login">登录</button>	-->
-
-			
+						<span class="info"> </span>	
 	</div>
 </div>
 
