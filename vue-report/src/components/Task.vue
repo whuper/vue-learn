@@ -363,10 +363,20 @@ export default {
     this.currentWeekDays = this.getWeekDays(new Date());
 
     let nextDate = this.addDate(this.currentWeekDays[0]['dateStr'],7);   
+    
 
-    this.nextWeekDays = this.getWeekDays(new Date(nextDate));
+    let arrTmp =  nextDate.split('-');
+     
+     arrTmp.forEach(function(element,index,arr){
+      if(element < 10){
+          arr[index] =  '0' + element.toString()
+            }       
+　　  });
 
+    arrTmp = arrTmp.join('-');
+    this.nextWeekDays = this.getWeekDays(new Date(arrTmp));
    
+  
     if(this.isPosted){
        this.setTitle('工作周报 (已提交)');
     } else {
@@ -736,6 +746,7 @@ this.getSchedules();
       };
     },
     getWeekDays(date) {
+      console.log('date##',date);
       var week = date.getDay() - 1;
       date.setDate(date.getDate() + week * -1);
       this.currentFirstDate = new Date(date);
