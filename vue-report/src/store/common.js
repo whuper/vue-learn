@@ -1,11 +1,12 @@
 const state = {
 	bMsg:{show:false},
 	loading:false,
-	title:'欢迎你的到来,请登录',
+	title:'欢迎,请登录',
 	dialogAlert:{
 		active:false,
 		onConfirm:function(){}
 	},
+	showToolBar:true,
 	timeOut:null
 }
 
@@ -19,6 +20,9 @@ const actions = {
 		dialogAlert({commit, state},payload){
 			console.log('dialogAlert',payload);
 			commit('dialogAlert_req',payload)		
+		},
+		setShowToolBar({commit, state},payload){		
+			commit('updateShowToolBar_req',payload)		
 		}
   
 }
@@ -40,7 +44,10 @@ const mutations = {
 	},
 	setLoading_req(state,val){
 		state.loading = val;	
-},
+	},
+	updateShowToolBar_req(state,payload){
+		state.showToolBar = payload;	
+	},
 	updateSnackBar_req(state,payload){
 		if(payload){
 			state.bMsg.title = payload.bMsg;

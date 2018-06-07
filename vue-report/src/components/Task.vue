@@ -12,7 +12,9 @@
 
         <div class="md-toolbar-section-end">
           
-          <md-button class="md-raised md-primary" @click="getSchedules" > 刷新</md-button>
+          <md-button class="md-raised md-primary" @click="getSchedules" >  <md-icon>cached</md-icon> 
+           <md-tooltip md-direction="right"> 刷新 </md-tooltip>
+           </md-button>
         	<!-- <md-button class="md-raised md-primary" @click="allDone" > 一键完成</md-button> -->
         </div>
       </md-table-toolbar>
@@ -496,7 +498,7 @@ this.getSchedules();
             if(element['title'] && element['percent'] && element['title'].replace(/(^\s*)|(\s*$)/g,"")){         resolve('resolve4');
               
             } else {
-              this.setShowSnackbar({bMsg:'本周工作信息不完整,请检查'});       
+              this.setShowSnackbar({bMsg:'本周工作信息未填写完整,请检查'});       
               document.body.scrollTop = 0;
               document.documentElement.scrollTop = 0;
               reject('reject4')
@@ -516,7 +518,7 @@ this.getSchedules();
              
               resolve('resolve5');
             } else {
-              this.setShowSnackbar({bMsg:'额外任务信息不完整,请检查'}); 
+              this.setShowSnackbar({bMsg:'额外任务信息未填写完整,请检查'}); 
               reject('reject5');
           
             }
@@ -563,7 +565,7 @@ this.getSchedules();
         } else {
           this.setShowSnackbar({bMsg:'错误#02'});
         }
-      }).catch(function (error) {
+      }).catch( (error) => {
       this.$store.commit('setLoading_req',false) 
 					console.log(error);
 				 });

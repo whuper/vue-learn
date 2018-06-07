@@ -35,8 +35,8 @@ export default {
     return {
       msg: 'Welcome to Log on',
 			isLoging: false,
-      userId: '0147',
-      passwd: '123456'
+      userId: '',
+      passwd: ''
     }
   },
 	computed: {
@@ -98,8 +98,8 @@ export default {
           this.$store.commit('setLoading_req',false);
           this.setShowSnackbar({bMsg:'无法登录 密码错误#01'});
         }
-      }).catch(function (error) {
-				this.setShowSnackbar({bmsg:'无法登录,服务器故障..'});
+      }).catch( (error) => {
+				this.setShowSnackbar({bMsg:'无法登录,服务器故障..'});
 					console.log(error);
 				 });
     }

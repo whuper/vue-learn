@@ -1,6 +1,6 @@
 <template>
   <div class="menu-links">
-    <div class="text-right" v-show="!showToolBar"> <md-button class="expand-more" @click="showToolBar = true"> <md-icon>expand_more</md-icon> 
+    <div class="text-right" v-show="!showToolBar"> <md-button class="expand-more" @click="setShowToolBar(true)"> <md-icon>expand_more</md-icon> 
         </md-button>
         </div>
 
@@ -12,7 +12,7 @@
 				{{ title}} </span>
 
    <div class="md-toolbar-section-end">
-        <md-button @click="showToolBar = false"> <md-icon>expand_less</md-icon> 
+        <md-button @click="setShowToolBar(false)"> <md-icon>expand_less</md-icon> 
         </md-button>
       </div> 
 
@@ -142,8 +142,7 @@ import { mapActions,mapGetters,mapState} from 'vuex'
 export default {
 	 data () {
     return {
-            showNavigation:false,
-            showToolBar:true
+            showNavigation:false
     }
   },
   computed: {
@@ -152,7 +151,8 @@ export default {
       'userInfo'
     ]),
 		...mapState({
-			title: state => state.common.title
+			title: state => state.common.title,
+			showToolBar: state => state.common.showToolBar
     })
   },
 created:function() {
@@ -170,6 +170,7 @@ mounted:function() {
       ...mapActions([
         'updateinfo',
          'setTitle',
+         'setShowToolBar'
       ]),
 			login(){
 				this.$router.push('/login');
