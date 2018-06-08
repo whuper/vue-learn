@@ -58,7 +58,7 @@
    <md-dialog :md-active.sync="showDialog" class="user-form">
       <md-dialog-title>用户信息</md-dialog-title>
 
-  <form novalidate class="md-layout">
+  <form novalidate class="md-layout" >
       <div class="md-layout-item md-size-100">
 
  
@@ -66,7 +66,7 @@
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('userName')">
                 <label for="userName">姓名</label>
-                <md-input id="userName"  v-model="form.userName" :disabled="sending" />
+                <md-input id="userName"  v-model="form.userName" />
                 <span class="md-error" v-if="!$v.form.userName.required">请输入姓名</span>
                 <span class="md-error" v-else-if="!$v.form.userName.minlength">姓名不合法</span>
               </md-field>
@@ -89,11 +89,6 @@
            <div class="md-layout md-gutter">
 
               <div class="md-layout-item md-small-size-100">
-<!--          <md-field :class="getValidationClass('team')">
-                <label for="team">所在组</label>
-                <md-input  id="team"   v-model="form.team" :disabled="sending" /> 
-                  
-              </md-field> -->
 
                <md-autocomplete v-model="form.team" :md-options="teams" md-dense >
                        <label>所在组</label>
@@ -102,7 +97,7 @@
               </div>
 
                <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('gender')">
+              <md-field  >
                 <label for="gender">性别</label>
                 <md-select name="gender" id="gender" v-model="form.gender" md-dense :disabled="sending"> 
                   <md-option value="1">男</md-option>
@@ -176,7 +171,7 @@
     </form>
 
      <md-dialog-actions>
-        <md-button class="md-primary md-raised" v-show="status == 'add'" @click="validateUser">添加用户</md-button>
+        <md-button class="md-primary md-raised" v-show="status == 'add'" @click="validateUser">添加用户q</md-button>
         <md-button class="md-primary md-raised" v-show="status == 'edit'" @click="validateUser">提交修改</md-button>
         <md-button class="md-primary" @click="showDialog = false">取消</md-button>       
       </md-dialog-actions>
@@ -185,7 +180,6 @@
 
     <!-- edit form end -->
     </div>
-
 
 </div>
 </template>
@@ -206,15 +200,16 @@
     return items
   }
 
-
-import { mapActions,mapGetters,mapState} from 'vuex';
 import { validationMixin } from 'vuelidate'
-  import {
+import {
     required,
     email,
     minLength,
     maxLength
   } from 'vuelidate/lib/validators'
+
+
+import { mapActions,mapGetters,mapState} from 'vuex';
 
 export default {
   name: 'Report',
@@ -227,8 +222,8 @@ export default {
       status:null,
       selected: {},
       form: {
-        userName: null,
-        userId: null,
+        userName: '',
+        userId: '',
         gender: 1,
         team: null,
         department:null,
@@ -261,16 +256,7 @@ export default {
         userId: {
           required,
           minLength: minLength(2)
-        },
-        /*
-        team: {
-          required
         }
-        email: {
-          required,
-          email
-        }
-        */
       }
     },
 	methods:{
@@ -365,7 +351,11 @@ export default {
 
     },
     getValidationClass (fieldName) {
+      console.log('fieldName',fieldName);
+      
         const field = this.$v.form[fieldName]
+        console.log('field',field);
+        
         if (field) {
           return {
             'md-invalid': field.$invalid && field.$dirty
@@ -373,14 +363,15 @@ export default {
         }
       },
       clearForm () {
-        this.$v.$reset()
-        this.form = {}
-        this.form.userName = null
+        //this.$v.$reset();
+        this.form = {};
+        this.form.gender = 1;
+  /*       this.form.userName = null
         this.form.userId = null
         this.form.team = null
         this.form.gender = 1
         this.form.department = null
-        this.form.resetPwd = false
+        this.form.resetPwd = false */
 
       },
       getBasicData(){
@@ -410,7 +401,7 @@ export default {
               
                         
               } else {
-                this.setShowSnackbar({bMsg:response.data.msg});                 
+                this.setShowSnackbar({bMsg:'未添加'});                 
               }
           }).catch(function (error) {
             this.setShowSnackbar({bMsg:'添加失败 # 11'});
@@ -441,14 +432,23 @@ export default {
 
       },
       validateUser () {
-        this.$v.$touch()
+        console.log('form',this.form);        
+        this.$v.$touch()  
+
+        console.log('this.$v.$invalid',this.$v.$invalid);
+        
+       
         if (!this.$v.$invalid) {
+
           if(this.status == 'add'){
               this.saveUser()
           }
           if(this.status == 'edit'){
               this.updateUser()
           }
+        } else {
+          console.log('不合法');
+          
         }
       }
 	},

@@ -1,5 +1,5 @@
 <template>
-  <div class="all-report report md-layout-item md-size-90 md-large-size-80 md-xlarge-size-60 ma" >
+  <div class="all-report report md-layout-item md-size-90 md-large-size-90 md-xlarge-size-70 ma" >
     <!--<h2>{{ msg }}</h2>-->
 
 <div class="action" v-show="showToolBar">
@@ -44,7 +44,8 @@
    
 
       <md-button class="md-icon-button md-primary" @click="changeView">
-        <md-icon>view_list</md-icon>
+        <md-icon v-if="currentView == 'taskType'">view_list</md-icon>
+        <md-icon v-if="currentView == 'person'">person_outline</md-icon>
          <md-tooltip md-direction="right"> 切换视图 </md-tooltip>
       </md-button>
 
@@ -58,7 +59,6 @@
       <span class="count" v-show="reportsByPerson.length > 0" 
       >当前分组共 <strong>{{reportsByPerson.length}}</strong> 份
       </span>
-
 
       <md-button class="md-icon-button print md-primary" @click="print">
         <md-icon>print</md-icon>
@@ -100,8 +100,8 @@
 <p><br /></p>
 
 <!-- 视图 1 开始 -->
-<div v-if="currentView == 'taskType' && ((reportsByType.tasks && reportsByType.tasks.length) || (reportsByType.plans && reportsByType.plans.length) )" >
-      <md-table md-card>
+<div class="view-task" v-if="currentView == 'taskType' && ((reportsByType.tasks && reportsByType.tasks.length) || (reportsByType.plans && reportsByType.plans.length) )" >
+      <md-table md-card md-dense>
     <md-table-toolbar>
         <h1 class="md-title">本周任务</h1>
       </md-table-toolbar>
@@ -111,19 +111,19 @@
                     </md-table-row>
                    <md-table-row v-for="(task,key) in reportsByType.tasks" v-bind:key="key" v-bind:id="key">
 
-                    <md-table-cell>  {{ task.username }} </md-table-cell>
-                    <md-table-cell>  {{ task.title }} </md-table-cell>
-                    <md-table-cell>  {{ task.scheduledDate }} </md-table-cell> 
-                    <md-table-cell>  {{ task.percent ? task.percent : '0'}} %</md-table-cell>
-                    <md-table-cell>  {{ task.finishDate }} </md-table-cell>
-                    <md-table-cell>  {{ task.remark|wh}} </md-table-cell>
+                    <md-table-cell class="usern" nowrap> {{ task.username }} </md-table-cell>
+                    <md-table-cell> {{ task.title }} </md-table-cell>
+                    <md-table-cell nowrap> {{ task.scheduledDate }} </md-table-cell> 
+                    <md-table-cell> {{ task.percent ? task.percent : '0'}} %</md-table-cell>
+                    <md-table-cell nowrap> {{ task.finishDate }} </md-table-cell>
+                    <md-table-cell> {{ task.remark|wh}} </md-table-cell>
                    
                     </md-table-row>
              </md-table>
 						 <p>				
 						 </p>
 
-						     <md-table md-card>
+		<md-table md-card md-dense>
       <md-table-toolbar>
         <h1 class="md-title">本周额外任务</h1>
       </md-table-toolbar>
@@ -133,17 +133,17 @@
                     </md-table-row>
                    <md-table-row v-for="(task,key) in reportsByType.extraTasks" v-bind:key="key" >
 
-                    <md-table-cell>  {{ task.username }} </md-table-cell>
+                    <md-table-cell class="usern" nowrap>  {{ task.username }} </md-table-cell>
                     <md-table-cell>  {{ task.title }} </md-table-cell>
                     <md-table-cell>  {{ task.hours }} 小时 </md-table-cell>
-                    <md-table-cell>  {{ task.finishDate }} </md-table-cell>
+                    <md-table-cell nowrap>  {{ task.finishDate }} </md-table-cell>
                     <md-table-cell>  {{ task.remark |wh }} </md-table-cell>
                    
                     </md-table-row>
              </md-table>
              	 <p>				
 						 </p>
-             						     <md-table md-card>
+   <md-table md-card md-dense>
       <md-table-toolbar>
         <h1 class="md-title">下周计划</h1>
       </md-table-toolbar>
@@ -153,9 +153,9 @@
                     </md-table-row>
                    <md-table-row v-for="(plan,key) in reportsByType.plans" v-bind:key="key">
 
-                    <md-table-cell>  {{ plan.username }} </md-table-cell>
+                    <md-table-cell class="usern" nowrap>  {{ plan.username }} </md-table-cell>
                     <md-table-cell>  {{ plan.title }} </md-table-cell>
-                    <md-table-cell>  {{ plan.scheduledDate }} </md-table-cell>
+                    <md-table-cell nowrap>  {{ plan.scheduledDate }} </md-table-cell>
             
                     <md-table-cell>  {{ plan.remark|wh}} </md-table-cell>
                    
@@ -169,7 +169,7 @@
 <!-- row start // -->
 <div v-if="currentView == 'person' && reportsByPerson && reportsByPerson.length" class="user-report" v-for="(report,key) in reportsByPerson"  v-bind:key="key">
   <h3>{{report.username}}</h3>
-        <md-table md-card>
+    <md-table md-card >
       <md-table-toolbar>
         <h1 class="md-title">本周任务</h1>
       </md-table-toolbar>
@@ -189,7 +189,7 @@
 						 <p>				
 						 </p>
 
-						     <md-table md-card>
+ <md-table md-card >
       <md-table-toolbar>
         <h1 class="md-title">本周额外任务</h1>
       </md-table-toolbar>
@@ -207,7 +207,7 @@
              </md-table>
              	 <p>				
 						 </p>
-             						     <md-table md-card>
+   <md-table md-card>
       <md-table-toolbar>
         <h1 class="md-title">下周计划</h1>
       </md-table-toolbar>
@@ -301,6 +301,7 @@ export default {
       if(!type || !val) {
         return false;
       }
+      document.title = val + '工作周报';
       this.curTeam = val;
       this.$store.commit('setLoading_req',true)
       this.$axios.get('./index.php/report/get_reports_by_type',{params: {
@@ -345,13 +346,24 @@ export default {
         };
 
       });
+ 
 
       for (let key = 0; key < tempListByPerson.length; key++) { 
         //合并数组
+        if(tempListByPerson[key].plans && tempListByPerson[key].plans.length > 0){
+            Array.prototype.push.apply(tempListByType.plans,tempListByPerson[key].plans);
 
-        Array.prototype.push.apply(tempListByType.plans,tempListByPerson[key].plans);
-        Array.prototype.push.apply(tempListByType.tasks,tempListByPerson[key].tasks);
-        Array.prototype.push.apply(tempListByType.extraTasks,tempListByPerson[key].extraTasks);
+        }
+        if(tempListByPerson[key].tasks && tempListByPerson[key].tasks.length > 0){
+          Array.prototype.push.apply(tempListByType.tasks,tempListByPerson[key].tasks); 
+        }
+
+        if(tempListByPerson[key].extraTasks && tempListByPerson[key].extraTasks.length > 0){
+         Array.prototype.push.apply(tempListByType.extraTasks,tempListByPerson[key].extraTasks);
+
+        }
+      
+       
 
         
 /*         

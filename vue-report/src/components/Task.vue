@@ -333,7 +333,7 @@ export default {
       twinkleOut:null,
       isSubmiting:false,
       showConfirm:false,
-      percentList:[100,90,80,70,60,0,50,40,30,20,10]
+      percentList:[90,80,70,60,100,0,50,40,30,20,10]
       //percentList:[0,10,20,30,40,50,60,70,80,90,100]
       //weekNumber:0,
       //isPosted:false
@@ -365,7 +365,7 @@ export default {
     let nextDate = this.addDate(this.currentWeekDays[0]['dateStr'],7);   
     
 
-    let arrTmp =  nextDate.split('-');
+/*     let arrTmp =  nextDate.split('-');
      
      arrTmp.forEach(function(element,index,arr){
       if(element < 10){
@@ -373,8 +373,9 @@ export default {
             }       
 　　  });
 
-    arrTmp = arrTmp.join('-');
-    this.nextWeekDays = this.getWeekDays(new Date(arrTmp));
+    arrTmp = arrTmp.join('-'); */
+
+    this.nextWeekDays = this.getWeekDays(new Date(nextDate));
    
   
     if(this.isPosted){
@@ -445,6 +446,7 @@ this.getSchedules();
       this.$axios.post(postUrl,
 			data,
 			).then(response => {
+        this.isSubmiting = false;
         if(response.data.ok == true){
           this.$store.commit('updatePostStatus_req',true);
 
@@ -458,7 +460,7 @@ this.getSchedules();
         } else {
           this.setShowSnackbar({bMsg:response.data.msg,millisecond:1200});
         }
-        this.isSubmiting = false;
+        
       }).catch(function (error) {
         this.isSubmiting = false;
 					console.log(error);
@@ -548,6 +550,7 @@ this.getSchedules();
           this.showConfirm = true;
       }  
       ).catch(function(e) {
+        this.isSubmiting = false;
         console.log('e3',e);   
 
       }
@@ -643,7 +646,7 @@ this.getSchedules();
       }
 
 
-      let tmpItem = this.getSampleData(taskType);
+      let tmpItem = this.getSampleData(taskType);         
 
    
       if(this.schedules[taskType] && this.schedules[taskType].length > 0){
@@ -652,17 +655,26 @@ this.getSchedules();
 
           if(tmpItem.scheduledDate){
               let tmpSd = new Date(lastItem.scheduledDate);
+             
               if (tmpSd.getDay() != 0) {
-                  tmpItem.scheduledDate = this.addDate(lastItem.scheduledDate, 1);
+                  tmpItem.scheduledDate = this.addDate(lastItem.scheduledDate, 1);                 
+              } else {
+
+                  tmpItem.scheduledDate = lastItem.scheduledDate;
               }
           }
           if(tmpItem.finishDate){
               let tmpfd = new Date(lastItem.finishDate);
               if (tmpfd.getDay() != 0) {
                 tmpItem.finishDate = this.addDate(lastItem.finishDate, 1);
+              } else {
+
+                  tmpItem.finishDate = lastItem.finishDate;
               }
           }
       }
+
+      
 
       this.schedules[taskType].push(tmpItem);
     },
@@ -739,6 +751,14 @@ this.getSchedules();
       //如果不够2位,数字前补0
       //month = (Array(2).join('0') + month).slice(-2)
       //day = (Array(2).join('0') + day).slice(-2)
+
+      if(month < 10){
+          month =  '0' + month.toString()
+      }
+      if(day < 10){
+          day =  '0' + day.toString()
+      }   
+
       return {
         dateStr: year + "-" + month + "-" + day,
         week: week,
@@ -780,11 +800,18 @@ this.getSchedules();
       return result+1;
     },
     addDate(date, days) {
-      console.log('date',date);
+    
       var d = new Date(date.replace(/-/g,"/") );
       d.setDate(d.getDate() + days);
-      var m = d.getMonth() + 1;
-      return d.getFullYear() + "-" + m + "-" + d.getDate();
+      var month = d.getMonth() + 1;
+      var day = d.getDate();
+      if(month < 10){
+        month = '0' + month.toString();
+      }
+    if(day < 10){
+        day = '0' + day.toString();
+      }
+      return d.getFullYear() + "-" + month + "-" + day;
     },
     //拖放操作
     drag: function(event,tabletype) {
