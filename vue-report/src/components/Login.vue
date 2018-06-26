@@ -19,7 +19,7 @@
       <md-input type="password" v-model="passwd"></md-input>
     </md-field>
 
-        <md-button class="md-raised md-primary" @click="doLogin" :disabled="!userId || !passwd" >登录</md-button>
+        <md-button class="md-raised md-primary"  @click="doLogin" :disabled="!userId || !passwd" >登录</md-button>
           </md-card-content>
       </md-card>
     </form>
@@ -38,6 +38,18 @@ export default {
       userId: '',
       passwd: ''
     }
+  },
+  created(){
+    let $this = this;
+    window.onkeydown = function(e){
+      var key = e.keyCode;
+      if(key == '13' && $this.userId && $this.passwd){    
+          $this.doLogin();
+      }
+
+    }
+
+
   },
 	computed: {
    /*...mapGetters([
