@@ -16,8 +16,8 @@ module.exports = {
     port: 8090, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
 		proxyTable: {
          '/index.php': {
-				 //target: 'http://localhost:80/simi',
-				 target: 'https://ssltest.ngarihealth.com/report',
+				 target: 'http://localhost:80/simi',
+				 //target: 'https://ssltest.ngarihealth.com/report',
          changeOrigin: true,
          secure: false
          }

@@ -171,7 +171,7 @@
     </form>
 
      <md-dialog-actions>
-        <md-button class="md-primary md-raised" v-show="status == 'add'" @click="validateUser">添加用户q</md-button>
+        <md-button class="md-primary md-raised" v-show="status == 'add'" @click="validateUser">确定</md-button>
         <md-button class="md-primary md-raised" v-show="status == 'edit'" @click="validateUser">提交修改</md-button>
         <md-button class="md-primary" @click="showDialog = false">取消</md-button>       
       </md-dialog-actions>

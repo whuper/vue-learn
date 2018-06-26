@@ -57,6 +57,16 @@
                     </md-table-row>
              </md-table>
 
+<div class="mt-50 text-center ">
+
+				<router-link to="/">
+				 <md-button class="md-raised md-primary">
+          <md-icon>keyboard_backspace</md-icon>
+          返回主页
+          </md-button> 
+				</router-link>
+
+</div>
     </div>
 </template>
 

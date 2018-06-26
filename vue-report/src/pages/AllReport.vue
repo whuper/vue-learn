@@ -9,7 +9,10 @@
  -->
 
     <md-menu md-size="small" md-align-trigger md-dense>
-      <md-button md-menu-trigger>{{this.increase == -1 ? '上周' :'本周'}} </md-button>
+      <md-button md-menu-trigger>{{this.increase == -1 ? '上周' :'本周'}} 
+    <md-tooltip md-direction="right"> 查看本周或者上周的周报 </md-tooltip>
+
+      </md-button>
 
       <md-menu-content >
 
@@ -22,11 +25,18 @@
 
 
     <md-menu md-size="medium" md-align-trigger md-dense>
-      <md-button md-menu-trigger>小组</md-button>
+      <md-button md-menu-trigger> 筛选 <span >({{curTeam||'未选择'}})</span>
+        <md-tooltip md-direction="right"> 按组或者部门查看 </md-tooltip>
+        </md-button>
 
       <md-menu-content >
+         <md-subheader> 按小组</md-subheader>
 
-        <md-menu-item v-for= "(team,key) in teams"  v-bind:key="key"  @click="getReports('team',team)">{{team}}</md-menu-item>  
+        <md-menu-item :disabled="curTeam == team" v-for= "(team,key) in teams"  v-bind:key="key+'t'"  @click="getReports('team',team)">{{team}}</md-menu-item>  
+
+           <md-subheader> 按部门</md-subheader>
+
+          <md-menu-item :disabled="curTeam == department" v-for= "(department,key) in departments"  v-bind:key="key+'d'"  @click="getReports('department',department)">{{department}}</md-menu-item> 
 
       </md-menu-content>
 
@@ -73,18 +83,19 @@
 
 
 <div v-show="reportInfo && reportInfo.length" class="report-info-box">
-<h2> {{this.increase == -1 ? '上周' :'本周'}} 已提交的周报 </h2>
+<h2 class="md-title"> <strong>{{this.increase == -1 ? '上周' :'本周'}} </strong>已提交的周报 </h2>
 
- <p class="info" v-for="(item,key) in reportInfo"  v-bind:key="key">
-  {{item.team}} *  <b>{{item.counts}}</b> 份
+ <p  class="md-display-2" v-for="(item,key) in reportInfo"  v-bind:key="key">
+  {{item[reportView]||"其他"}} <i class="material-icons">trending_flat</i>  <b>{{item.counts}}</b> 份
 </p>
+
 
 
 
 </div>
 
 <div v-show="!reportInfo || !reportInfo.length">
-<h1> 还没有周报提交</h1>
+<h1 class="md-display-4"> 还没有周报提交</h1>
 
 </div>
 
@@ -275,7 +286,7 @@ export default {
 	...mapActions([
       'setTitle'
     ]),
-   getBasicData(){
+   getBasicData(type){
     this.$store.commit('setLoading_req',true)
       this.$axios.get('./index.php/user/get_basic_data').then(response => {       
           this.teams = response.data.teams;           
@@ -284,9 +295,17 @@ export default {
         
 					console.log(error);
          });
-         
+
+    //获取周报概览
+      if(!type){
+           type = 'team';           
+      }
+      this.reportView = type;
+      console.log('this.reportView',this.reportView);
+              
       this.$axios.get('./index.php/report/get_report_info',{params: {
-      weekNumber:this.weekNumber + this.increase
+      weekNumber:this.weekNumber + this.increase,
+      type:type
     }}).then(response => {       
           this.reportInfo = response.data.report_info;           
             this.$store.commit('setLoading_req',false)
@@ -301,6 +320,9 @@ export default {
       if(!type || !val) {
         return false;
       }
+      //获取概览
+      this.getBasicData(type);
+
       document.title = val + '工作周报';
       this.curTeam = val;
       this.$store.commit('setLoading_req',true)
