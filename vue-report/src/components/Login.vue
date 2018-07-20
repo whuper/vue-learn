@@ -16,10 +16,10 @@
 
        <md-field>
       <label>密码</label>
-      <md-input type="password" v-model="passwd"></md-input>
+      <md-input type="password" v-model="password"></md-input>
     </md-field>
 
-        <md-button class="md-raised md-primary"  @click="doLogin" :disabled="!userId || !passwd" >登录</md-button>
+        <md-button class="md-raised md-primary"  @click="doLogin" :disabled="!userId || !password" >登录</md-button>
           </md-card-content>
       </md-card>
     </form>
@@ -36,14 +36,14 @@ export default {
       msg: 'Welcome to Log on',
 			isLoging: false,
       userId: '',
-      passwd: ''
+      password: ''
     }
   },
   created(){
     let $this = this;
     window.onkeydown = function(e){
       var key = e.keyCode;
-      if(key == '13' && $this.userId && $this.passwd){    
+      if(key == '13' && $this.userId && $this.password){    
           $this.doLogin();
       }
 
@@ -80,7 +80,8 @@ export default {
   
 	var data = this.$qs.stringify({
     userId: this.userId,
-    password: this.passwd  
+    password: this.password,
+    encrypt:0
     });
 	this.$axios.post('./index.php/user/login',
 			data,
@@ -90,7 +91,8 @@ export default {
           this.setCookie('userId',response.data.userId, expireHours);
           this.setCookie('password',response.data.password, expireHours);
 
-					localStorage.setItem('userInfo',JSON.stringify(response.data));
+          //本地不再保存用户信息
+					//localStorage.setItem('userInfo',JSON.stringify(response.data));
 
 					//提交mutation到Store
 					this.$store.commit('updateinfo_req',response.data); 
@@ -114,6 +116,7 @@ export default {
 				this.setShowSnackbar({bMsg:'无法登录,服务器故障..'});
 					console.log(error);
 				 });
+	//该函数 end
     }
 	 
 		 }

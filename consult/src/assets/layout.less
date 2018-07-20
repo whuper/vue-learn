@@ -1,0 +1,168 @@
+@nice-blue: #5B83AD;
+@light-blue: @nice-blue + #111;
+
+.header {
+  //background: @light-blue;
+  color: @light-blue;
+  a {
+      color:@nice-blue;
+  }
+
+  .expand-more {
+	  right:30px;
+	visibility: hidden;
+  }
+ .text-right:hover .expand-more {
+		visibility:visible;	
+
+	}
+  
+ 
+}
+[v-cloak]{
+    display:none;
+}
+.clearfix:after {
+	content:".";display:block;height:0;clear:both;visibility:hidden;
+}
+.clearfix {
+	height:1%;
+}
+
+.center {
+margin:0 auto;
+}
+.tl {
+text-align:left;
+}
+.w-1000 {
+width:1000px;
+}
+
+.mar {
+margin-top:20px;
+}
+.consult-box {
+	.center;
+	.w-1000;
+	margin-top:30px;
+	select,button {
+		  vertical-align:middle;
+	}
+	.top-tool {
+			button {
+					height:30px;
+					padding:0 8px;
+					margin-right: 10px;
+			}	
+	}
+
+}
+.organSelect {
+    height: 30px;
+    line-height: 30px;
+}
+
+table.consult-table {
+	width:100%;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+
+	th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+	}
+
+	td {
+	border-width: 1px;
+	padding: 8px 2px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+	min-width:75px;
+	max-width:250px;
+	}
+	td.mini {
+		width:30px;
+	}
+	td.sp {
+			word-break: keep-all;
+			white-space:nowrap;	
+	}
+
+
+}
+.pagination {
+padding:10px 0;
+display:flex;
+flex-direction:row;
+flex-wrap:nowrap;
+justify-content:flex-end;
+}
+.pagination .num {
+min-width:50px;
+line-height: 30px;
+font-weight:bold;
+border:1px solid #ccc;
+}
+.bottom-tool {
+margin-top:10px;
+}
+.consult .kiko-confirm .kiko-container {
+   
+		.header {
+			background-color: #666;
+		}
+
+		 h1 {
+		font-size:20px;
+		font-weight:normal;
+		}
+		.kiko-footer {
+		padding:20px 10px;
+		}
+		.kiko-btn.make-sure {
+		background-color:#666;
+		}
+
+}
+.footer {
+padding:20px 0;
+min-height:100px;
+}
+.dg-container {
+	button {	
+		font-weight:normal;
+	}
+	.dg-btn--cancel {
+		background-color:#555;
+	}
+	.dg-btn--ok {
+		color:#555;
+		border-color:#555;
+	}
+
+}
+html body.dg-open {
+overflow:auto;
+}
+div {
+
+	.dg-backdrop, .dg-container {
+	    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+		width:auto;
+		height:auto;
+	}
+
+}
+.syncAllBtn {
+padding:5px 10px;
+font-weight:bold;
+}

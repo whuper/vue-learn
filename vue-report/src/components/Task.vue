@@ -1,5 +1,5 @@
-<template>
-<div class="task md-layout-item md-size-90 md-large-size-80 md-xlarge-size-60 ma">
+<template ref="task1" >
+<div ref="task2" class="task md-layout-item md-size-90 md-large-size-80 md-xlarge-size-60 ma">
     <!--<h1>{{ msg }}</h1>-->
     <form novalidate >
 
@@ -360,6 +360,16 @@ export default {
 		next();
   },
   mounted() {
+
+    console.log('task mounted');
+    EventBus.$on('ready',()=>{
+      console.log('get ready');     
+
+      //this.getSchedules();
+
+    })
+
+    
     this.currentWeekDays = this.getWeekDays(new Date());
 
     let nextDate = this.addDate(this.currentWeekDays[0]['dateStr'],7);   
@@ -406,7 +416,7 @@ this.schedules = this.getSampleData();
  */
 //this.weekNumber = this.getWeekOfYear();
 
-this.getSchedules();
+ this.getSchedules();
 
   },
   methods: {
@@ -560,10 +570,13 @@ this.getSchedules();
     },
     getSchedules(){
 
-      this.$store.commit('setLoading_req',true)
+      this.$store.commit('setLoading_req',true);
+
+      let userId = this.getCookie('userId');
  
       var data = this.$qs.stringify({
-        userId: this.userInfo.userId,
+        // userId: this.userInfo.userId,
+        userId: userId,
         weekNumber:this.weekNumber
       });
     	this.$axios.post('./index.php/report/getSchedules',
@@ -766,7 +779,7 @@ this.getSchedules();
       };
     },
     getWeekDays(date) {
-      console.log('date##',date);
+      // console.log('date##',date);
       var week = date.getDay() - 1;
       date.setDate(date.getDate() + week * -1);
       this.currentFirstDate = new Date(date);

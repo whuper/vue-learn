@@ -49,6 +49,8 @@ Vue.material.setCurrentTheme('default')*/
 
 Vue.config.productionTip = false
 
+window.EventBus = new Vue();  // 声明一个独立的空Vue公用实例，用来触发通讯的事件
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

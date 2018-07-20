@@ -56,6 +56,8 @@ export default {
   //进入页面时
   created() {
 		this.checkLogin();
+		console.log('App created');
+		
 		this.setData();
   },	
 	computed: {
@@ -86,21 +88,58 @@ export default {
 		//请求用户的一些信息
     getUserInfo(){
 
-      //发送http请求获取，这里写死作演示
+			console.log('go to getUserInfo');
 
-			if(this.getCookie('userId')){
-				this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
+      //发送http请求获取
+
+			let userId = this.getCookie('userId');
+			let password = this.getCookie('password');
+		
+			if(userId && password){
+				//this.userInfoOld = JSON.parse(localStorage.getItem('userInfo'));
+
+				//发送请求,更新用户最新信息
 				 //提交mutation到Store
-				this.$store.commit('updateinfo_req',this.userInfo); 
-			} else {			
-				this.$router.push('/login');
-			}
+				//this.$store.commit('updateinfo_req',this.userInfo);
+					var data = this.$qs.stringify({
+							userId: userId,
+							password: password,
+							encrypt:1  
+							});
+
+						this.$axios.post('./index.php/user/login',
+								data,
+								).then(response => {
+									if(response.data && response.data.userId){
+										//本地不再保存用户信息,改为每次从服务器获取 2018 0706
+										//localStorage.setItem('userInfo',JSON.stringify(response.data));
+										localStorage.removeItem('userInfo');
+										//提交mutation到Store
+										this.$store.commit('updateinfo_req',response.data); 
+										EventBus.$emit('ready');									
+										//this.$children[1].getSchedules();							
+									
+									} else {
+											this.delCookie('userId');
+											this.delCookie('password');
+											this.setShowSnackbar({bMsg:'获取信息失败,密码可能已被修改,请联系管理员 #22'});
+											this.$router.push('/login/');									
+									}
+								}).catch( (error) => {
+									this.setShowSnackbar({bMsg:'服务器故障 #21'});
+										console.log(error);
+									 });
+								// end
+
+								} else {			
+									this.$router.push('/login');
+								}
      
 		},
 		setData(){
 			var weekNumber = this.getWeekOfYear();
-			console.log('weekNumber',weekNumber);
+			// console.log('weekNumber',weekNumber);
 			
 			this.$store.commit('updateWeekNumber_req',weekNumber); 
 		},
@@ -122,15 +161,15 @@ export default {
 		},
 		checkLogin(){
 					//检查是否存在cookie
-					if(!this.getCookie('userId') || !localStorage.getItem('userInfo') ){
+				if(!this.getCookie('userId') || !this.getCookie('password')){
 						//如果没有登录状态则跳转到登录页
 				
 						this.$router.push('/login');
-					}else{
-					
+					}
+					/* else{
 					let userInfo = JSON.parse(localStorage.getItem('userInfo'));				
 					this.$store.commit('updateinfo_req',userInfo);
-					}
+					}*/
 				},
 		closebar(){
 				this.setShowSnackbar(false);
