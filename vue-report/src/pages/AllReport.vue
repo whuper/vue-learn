@@ -1,5 +1,5 @@
 <template>
-  <div class="all-report report md-layout-item md-size-90 md-large-size-90 md-xlarge-size-70 ma" >
+  <div class="all-report report md-layout-item md-size-90 ma" >
     <!--<h2>{{ msg }}</h2>-->
 
 <div class="action" v-show="showToolBar">
@@ -287,6 +287,7 @@ export default {
       'setTitle'
     ]),
    getBasicData(type){
+    
     this.$store.commit('setLoading_req',true)
       this.$axios.get('./index.php/user/get_basic_data').then(response => {       
           this.teams = response.data.teams;           
@@ -318,6 +319,7 @@ export default {
       },
     getReports(type,val){
       if(!type || !val) {
+        this.setShowSnackbar({bMsg:'条件不完整...'});
         return false;
       }
       //获取概览
@@ -425,6 +427,7 @@ export default {
     changeWeek(num){
 
       this.increase = num;
+      this.curTeam = null;
       this.getBasicData();
     },
     changeView(){

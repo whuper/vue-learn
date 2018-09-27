@@ -452,7 +452,7 @@ this.schedules = this.getSampleData();
       } else {
         postUrl = './index.php/report/postSchedules';
       }
-   
+      var _this = this;
       this.$axios.post(postUrl,
 			data,
 			).then(response => {
@@ -471,8 +471,8 @@ this.schedules = this.getSampleData();
           this.setShowSnackbar({bMsg:response.data.msg,millisecond:1200});
         }
         
-      }).catch(function (error) {
-        this.isSubmiting = false;
+      }).catch(function (error) {        
+          _this.isSubmiting = false;
 					console.log(error);
 				 });
 		
@@ -516,17 +516,33 @@ this.schedules = this.getSampleData();
         		this.setShowSnackbar({bMsg:'请填写本周任务'});		
             reject('reject4')
       } else {
-          this.schedules.tasks.forEach(element => {
-            if(element['title'] && element['percent'] && element['title'].replace(/(^\s*)|(\s*$)/g,"")){         resolve('resolve4');
+          var taskCount = 0;
+          this.schedules.tasks.forEach((element,index) => {
+            console.log('#'+index);
+            
+            
+            if(element['title'] && element['percent'] && element['title'].replace(/(^\s*)|(\s*$)/g,"")){
+
+              taskCount += 1;
               
             } else {
-              this.setShowSnackbar({bMsg:'本周工作信息未填写完整,请检查'});       
-              document.body.scrollTop = 0;
-              document.documentElement.scrollTop = 0;
-              reject('reject4')
-
+                let curTaskIndex = parseInt(index)+1;
+                this.setShowSnackbar({bMsg:'本周第' + curTaskIndex + '个工作任务未填写完整'});
+                this.twinkle(index,'tasks');     
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+                reject('reject4');
+                throw new Error('#32');
+       
             }
+       
           });
+          //
+          if(taskCount == this.schedules.tasks.length){
+              resolve('resolve4');
+          } else {
+            reject('reject4');       
+          }
       }
       // end --
     } )
@@ -554,13 +570,14 @@ this.schedules = this.getSampleData();
 
       var promiseAll = Promise.all( [promise1, promise2, promise3] );
 
+      var _this = this;
       promiseAll.then((res)=>{
         console.log('res',res);  
           //this.dosubmit();
-          this.showConfirm = true;
+          _this.showConfirm = true;
       }  
       ).catch(function(e) {
-        this.isSubmiting = false;
+        _this.isSubmiting = false;
         console.log('e3',e);   
 
       }
@@ -579,6 +596,7 @@ this.schedules = this.getSampleData();
         userId: userId,
         weekNumber:this.weekNumber
       });
+      var _this = this;
     	this.$axios.post('./index.php/report/getSchedules',
 			data,
 			).then(response => {
@@ -592,7 +610,7 @@ this.schedules = this.getSampleData();
           this.setShowSnackbar({bMsg:'错误#02'});
         }
       }).catch( (error) => {
-      this.$store.commit('setLoading_req',false) 
+          _this.$store.commit('setLoading_req',false) 
 					console.log(error);
 				 });
 
