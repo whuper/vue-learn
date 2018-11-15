@@ -66,6 +66,10 @@
         <md-tooltip md-direction="right"> 刷新 </md-tooltip>
       </md-button>
 
+      <md-button class="md-raised" @click="haveNotHanded">
+          谁没交周报
+      </md-button>
+
       <span class="count" v-show="reportsByPerson.length > 0" 
       >当前分组共 <strong>{{reportsByPerson.length}}</strong> 份
       </span>
@@ -238,6 +242,31 @@
 </div>
 <!-- row end // -->
 
+<!-- dialog -->
+    <md-dialog :md-active.sync="showListDialog">
+      <md-dialog-title>未交周报人员名单</md-dialog-title>
+      <div class="info-box">
+        
+       <md-progress-bar  class="md-accent" md-mode="determinate" :md-value="otherMsg.rate * 100"></md-progress-bar>
+
+       <p v-show="parseFloat(otherMsg.rate) >= 0.2">
+           <span v-for="(name,key) in allUsersNotHandled" v-bind:key="key"> {{name}}</span>
+       </p>
+        
+
+           <p v-show="parseFloat(otherMsg.rate) < 0.2">没交周报的人太多,别看了! <!--{{otherMsg.rate}}--></p>
+
+            <p v-show="parseFloat(otherMsg.rate) > 0.5 &&!allUsersNotHandled.length" >交齐了</p>
+        
+      </div>
+
+
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="showListDialog = false">关闭</md-button>
+   
+      </md-dialog-actions>
+    </md-dialog>
+<!-- dialog end// -->
     </div>
 </template>
 
@@ -248,14 +277,17 @@ export default {
   data () {
     return {
       msg: '',
+      otherMsg:{},
       teams:[],
+      allUsersNotHandled:[],
       departments:[],
       reportsByType:[],
       reportsByPerson:[],
       reportInfo:null,
       curTeam:null,
       increase:0,
-      currentView:'taskType'
+      currentView:'taskType',
+      showListDialog:false
     }
   },
   filters: {
@@ -461,6 +493,25 @@ export default {
       this.getBasicData();
 
     },
+    haveNotHanded(){
+        this.$store.commit('setLoading_req',true)
+
+       
+
+        this.$axios.get('./index.php/report/haveNotHanded',{params: {
+          weekNumber:this.weekNumber + this.increase
+          }}).then(response => {
+             this.showListDialog   = true;       
+              this.allUsersNotHandled = response.data.user;           
+              this.otherMsg = response.data.otherMsg;           
+                this.$store.commit('setLoading_req',false)
+          }).catch( (error) => {
+                this.$store.commit('setLoading_req',false)
+            
+              console.log(error);
+            });
+
+    }
 	}
 }
 </script>

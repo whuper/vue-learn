@@ -237,12 +237,14 @@
 									</md-field> 
                   </md-table-cell>
         <md-table-cell class="w-160">
-              <div class="md-layout-item">
+              <div class="md-layout-item" >
                   <md-field>		
 													<md-select v-model="plan.scheduledDate" md-dense >
 															<md-option v-for="(item,index2) in nextWeekDays"  :value="item.dateStr" :key="index2" >周{{item.week }}({{item.dateStr }})</md-option>
 														</md-select>
                        </md-field>	
+
+                        <md-tooltip md-direction="top">{{plan.scheduledDate}}</md-tooltip>
                </div>
            </md-table-cell>
         <md-table-cell> 
@@ -385,8 +387,10 @@ export default {
 
     arrTmp = arrTmp.join('-'); */
 
+    var _this = this;
+
     this.nextWeekDays = this.getWeekDays(new Date(nextDate));
-   
+
   
     if(this.isPosted){
        this.setTitle('工作周报 (已提交)');
@@ -520,8 +524,8 @@ this.schedules = this.getSampleData();
           this.schedules.tasks.forEach((element,index) => {
             console.log('#'+index);
             
-            
-            if(element['title'] && element['percent'] && element['title'].replace(/(^\s*)|(\s*$)/g,"")){
+            //  && element['percent'] 
+            if(element['title'] && element['title'].replace(/(^\s*)|(\s*$)/g,"")){
 
               taskCount += 1;
               
@@ -585,6 +589,36 @@ this.schedules = this.getSampleData();
       )
           
     },
+    combineList(){
+      var _this = this;
+      
+      //将服务返回的日期,也push到nextWeekDays数组里
+      this.schedules.plans.forEach(elementPlan => {
+        let count = 0;
+
+        _this.nextWeekDays.forEach(elementNextWeekDays => {
+          
+            if(elementPlan.scheduledDate != elementNextWeekDays.dateStr){
+
+              count += 1;
+  
+            }
+        });  
+        //如果都匹配不上就push
+        if(count == _this.nextWeekDays.length && elementPlan.scheduledDate){
+
+          // new Date(nextDate)
+
+          let tempObj =  this.formatDate(new Date(elementPlan.scheduledDate));
+
+          _this.nextWeekDays.push(tempObj);
+
+        }
+        
+      });
+      console.log('this.nextWeekDays',this.nextWeekDays);
+
+    },
     getSchedules(){
 
       this.$store.commit('setLoading_req',true);
@@ -626,6 +660,7 @@ this.schedules = this.getSampleData();
           if(resdata.thisWeek.tasks.length > 1){
               this.schedules.tasks = JSON.parse(resdata.thisWeek.tasks);       
           }
+     
           if(resdata.thisWeek.plans.length > 1){
                this.schedules.plans = JSON.parse(resdata.thisWeek.plans);
 
@@ -635,30 +670,29 @@ this.schedules = this.getSampleData();
           }
          
 
-      } else if(resdata.prevWeek){
+      } else if(resdata.prevWeek && resdata.prevWeek.plans){
 
-          if(resdata.prevWeek.plans){
-           this.schedules.tasks = JSON.parse(resdata.prevWeek.plans);
+          this.schedules.tasks = JSON.parse(resdata.prevWeek.plans);
           this.schedules.tasks.forEach(element => {
               element['scheduledDate'] = element['scheduledDate'];
               element['finishDate'] = element['scheduledDate'];
               if(!element['percent'] || !element['percent'].length){
                 element['percent'] = 0;
-
               }
-              
+
               if(!element['remark'] || element['remark'] == 'null'){
                 element['remark'] = ' ';
               }
           });
-              
-          } else {
+   
+
+      } else {
             let sampleTask = this.getSampleData('tasks');
-            this.schedules.tasks = [sampleTask];                   
-        }
+            this.schedules.tasks = [sampleTask];   
 
       }
 
+      this.combineList();
 
     },
     addTask(taskType,index) {
