@@ -335,7 +335,7 @@ export default {
       twinkleOut:null,
       isSubmiting:false,
       showConfirm:false,
-      percentList:[90,80,70,60,100,0,50,40,30,20,10]
+      percentList:[90,80,70,60,100,'?',0,50,40,30,20,10]
       //percentList:[0,10,20,30,40,50,60,70,80,90,100]
       //weekNumber:0,
       //isPosted:false
@@ -522,10 +522,9 @@ this.schedules = this.getSampleData();
       } else {
           var taskCount = 0;
           this.schedules.tasks.forEach((element,index) => {
-            console.log('#'+index);
             
             //  && element['percent'] 
-            if(element['title'] && element['title'].replace(/(^\s*)|(\s*$)/g,"")){
+            if(element['title'] && element['title'].replace(/(^\s*)|(\s*$)/g,"") && element['percent'] != '?'){
 
               taskCount += 1;
               
@@ -751,7 +750,7 @@ this.schedules = this.getSampleData();
     },
     clearTask(taskType,index) {
       this.schedules[taskType][index].title = " ";
-      this.schedules[taskType][index].percent = 0;
+      this.schedules[taskType][index].percent = '?';
       this.schedules[taskType][index].remark = " ";
     },
     getSampleData(type){
@@ -760,7 +759,7 @@ this.schedules = this.getSampleData();
         return {
                       title: " ",
                         scheduledDate: this.currentWeekDays[0].dateStr,
-                        percent: 0,
+                        percent: '?',
                         finishDate: this.currentWeekDays[0].dateStr,
                         remark: " "
                       }
@@ -790,7 +789,7 @@ this.schedules = this.getSampleData();
                   {
                       title: " ",
                         scheduledDate: this.currentWeekDays[0].dateStr,
-                        percent: 0,
+                        percent: '?',
                         finishDate: this.currentWeekDays[0].dateStr,
                         remark: " "
                       }
@@ -959,7 +958,7 @@ this.schedules = this.getSampleData();
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
-h1,
+/* h1,
 h2 {
   font-weight: normal;
 }
@@ -973,7 +972,7 @@ li {
 }
 a {
   color: #42b983;
-}
+} */
 .task {
   .list-enter-active,
   .list-leave-active {
