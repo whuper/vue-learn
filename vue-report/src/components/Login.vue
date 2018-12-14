@@ -8,7 +8,7 @@
         </md-card-header>
 		
         <md-card-content>
-    <md-field>
+    <md-field md-clearable>
       <label>请输入用户名(工号)</label>
       <md-input v-model="userId"></md-input>
     </md-field>

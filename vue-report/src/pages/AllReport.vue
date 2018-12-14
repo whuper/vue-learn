@@ -116,7 +116,7 @@
 
 <!-- 视图 1 开始 -->
 <div class="view-task" v-if="currentView == 'taskType' && ((reportsByType.tasks && reportsByType.tasks.length) || (reportsByType.plans && reportsByType.plans.length) )" >
-      <md-table md-card md-dense>
+      <md-table md-card md-dense class="task-table">
     <md-table-toolbar>
         <h1 class="md-title">本周任务</h1>
       </md-table-toolbar>
@@ -138,7 +138,7 @@
 						 <p>				
 						 </p>
 
-		<md-table md-card md-dense>
+		<md-table md-card md-dense class="extra-task-table">
       <md-table-toolbar>
         <h1 class="md-title">本周额外任务</h1>
       </md-table-toolbar>
@@ -158,7 +158,7 @@
              </md-table>
              	 <p>				
 						 </p>
-   <md-table md-card md-dense>
+   <md-table md-card md-dense class="plan-table">
       <md-table-toolbar>
         <h1 class="md-title">下周计划</h1>
       </md-table-toolbar>

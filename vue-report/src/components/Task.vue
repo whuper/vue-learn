@@ -3,7 +3,8 @@
     <!--<h1>{{ msg }}</h1>-->
     <form novalidate >
 
-<transition-group name="list" class="report-table md-card md-dense"  v-bind:class="{move:taskIsMoving}" tag="md-table" >
+<!-- <transition-group name="list" class="report-table md-card md-dense"  tag="md-table" > -->
+   <md-table name="list" class="report-table md-card md-dense" v-bind:class="{move:taskIsMoving}" >
     <md-table-toolbar key="1515">
          <div class="md-toolbar-section-start">
         <h1 class="md-title">本周工作小结</h1>
@@ -26,19 +27,19 @@
 										 
                     <md-table-row class="item " v-bind:class="{newItem:newItemIndex == 'tasks' + key}"  @drop="drop($event,'taskIsMoving')" @dragover="allowDrop($event,'taskIsMoving')" v-for="(task,key) in schedules.tasks" v-bind:key="key" v-bind:id="key" >
 
-										<md-table-cell class="md-table-cell w-50"><p class="move"  draggable='true'  @dragstart="drag($event,'taskIsMoving')">
+										<md-table-cell class="md-table-cell"><p class="move"  draggable='true'  @dragstart="drag($event,'taskIsMoving')">
 										<md-icon>arrow_right</md-icon>
 										<!--{{key + 1}}-->
 		</p> </md-table-cell> 
 
                   <md-table-cell class="title"> 
 											
-										<md-field >									
-										<md-input v-model="task.title"   ></md-input>
-                
-                    <md-button v-show="task.title && task.title.length > 1" class="md-icon-button md-dense md-input-action md-clear" @click="clear(task)" >
+										<md-field data-md-clearable>									
+										<md-textarea v-model="task.title"   md-autogrow></md-textarea>
+               <!--  
+                    <md-button v-show="task.title && task.title.length > 1" class="md-button md-icon-button md-dense md-input-action md-clear" @click="clear(task)" >
                       <md-icon>clear</md-icon>
-                    </md-button>
+                    </md-button> -->
 
 									</md-field>
 									</md-table-cell>
@@ -55,12 +56,9 @@
                     </md-table-cell>
 
                     <md-table-cell class="w-80 bl" > 		
-												<md-field>									
-				<!-- 					 <md-input v-model="task.percent" ></md-input> 
-										<md-input type="text" v-model="task.percent" /> <span class="md-suffix">%</span> -->
-
+												<md-field>	
                             <md-select md-dense v-model="task.percent" >
-															<md-option v-for="(item,key) in percentList"  :value="item" :key="key" >{{item}}%</md-option>
+															<md-option ng-hide="item != '?'" v-for="(item,key) in percentList"  :value="item" :key="key" >{{item}} % </md-option>
 												</md-select>
 
                
@@ -80,8 +78,8 @@
 
 
                         <md-table-cell>
-																<md-field>									
-										<md-input v-model="task.remark"  ></md-input>
+																<md-field data-md-clearable>									
+										<md-textarea v-model="task.remark"  md-autogrow> </md-textarea>
 									</md-field>
 
 												</md-table-cell>
@@ -111,8 +109,8 @@
 								
                        
                     </md-table-row>
-										   
-						</transition-group>
+										    </md-table>
+						<!-- </transition-group>   -->
 
 		<div class="action text-r">
 			<md-button class="md-raised md-primary" @click="addTask('tasks',null)"  >  <md-icon  >add</md-icon>
@@ -121,9 +119,9 @@
 			<!--<md-button class="md-primary" @click="shuffle"  >反转</md-button>-->
 		</div>
 
-<transition-group name="list" class="report-table md-card"  v-bind:class="{move:extraIsMoving}" tag="md-table" >
+<!-- <transition-group name="list" class="report-table md-card"  v-bind:class="{move:extraIsMoving}" tag="md-table" > -->
 
-<!-- <md-table name="list" class="report-table md-card"  v-bind:class="{move:extraIsMoving}"> -->
+<md-table name="list" class="report-table md-card md-dense" v-bind:class="{move:extraIsMoving}">
     <md-table-toolbar key="1616">
         <h1 class="md-title">本周额外任务</h1>
       </md-table-toolbar>
@@ -139,16 +137,16 @@
 		</p> </md-table-cell> 
                   <md-table-cell class="title"> 
 									
-										<md-field>									
-										<md-input v-model="task.title" ></md-input>
-                            <md-button v-show="task.title && task.title.length > 1" class="md-icon-button md-dense md-input-action md-clear" @click="clear(task)" >
+										<md-field data-md-clearable>									
+										<md-textarea v-model="task.title" md-autogrow></md-textarea>
+                    <!--         <md-button v-show="task.title && task.title.length > 1" class="md-icon-button md-dense md-input-action md-clear" @click="clear(task)" >
                       <md-icon>clear</md-icon>
-                    </md-button>
+                    </md-button> -->
 									</md-field>
 									</md-table-cell>
 
                     <md-table-cell class="w-160"> 		
-												<md-field>									
+											<md-field>									
 										<md-input v-model="task.hours"> </md-input>
 									</md-field>
                   </md-table-cell> 
@@ -165,8 +163,8 @@
 
 
                         <md-table-cell class="w-250">
-																<md-field>									
-										<md-input v-model="task.remark" ></md-input>
+																<md-field data-md-clearable>									
+										<md-textarea v-model="task.remark" md-autogrow></md-textarea>
 									</md-field>
 
 												</md-table-cell>
@@ -196,8 +194,8 @@
 								
                        
                     </md-table-row>										   
-					
-            </transition-group>
+					</md-table>
+            <!-- </transition-group> -->
 
 		<div class="action text-r">
 			<md-button class="md-raised md-primary" @click="addTask('extraTasks',null)"  >  <md-icon  >add</md-icon>
@@ -206,9 +204,9 @@
 			<!--<md-button class="md-primary" @click="shuffle"  >反转</md-button>-->
 		</div>
 
+<!-- <transition-group name="list" class="report-table plan-table md-card"  v-bind:class="{move:plansIsMoving}" tag="md-table" > -->
 
-	 <!-- <md-table  class="report-table md-card"  v-bind:class="{move:plansIsMoving}"> -->
-<transition-group name="list" class="report-table plan-table md-card"  v-bind:class="{move:plansIsMoving}" tag="md-table" >
+	 <md-table  class="report-table md-card md-dense"  v-bind:class="{move:plansIsMoving}">
 
       <md-table-toolbar key="1717">
         <h1 class="md-title">下周计划</h1>
@@ -224,19 +222,20 @@
       </md-table-row>
 
        <md-table-row class="item" @drop="drop($event,'plansIsMoving')" @dragover='allowDrop($event)' v-for="(plan,key) in schedules.plans" v-bind:key="key" v-bind:id="key" v-bind:class="{newItem:newItemIndex == 'plans' + key}" >
-										<md-table-cell class="md-table-cell "><p class="move"  draggable='true'  @dragstart="drag($event,'plansIsMoving')">
+	<md-table-cell class="md-table-cell w-50">
+    <p class="move"  draggable='true'  @dragstart="drag($event,'plansIsMoving')">
 		<md-icon>arrow_right</md-icon>
 		</p> </md-table-cell> 
 
-        <md-table-cell> 
-          	<md-field>									
-										<md-input v-model="plan.title" ></md-input>
-                            <md-button v-show="plan.title && plan.title.length > 1" class="md-icon-button md-dense md-input-action md-clear" @click="clear(plan)" >
+        <md-table-cell class="md-table-cell p-45"> 
+          	<md-field data-md-clearable>									
+										<md-textarea v-model="plan.title" md-autogrow> </md-textarea>
+                      <!--       <md-button v-show="plan.title && plan.title.length > 1" class="md-icon-button md-dense md-input-action md-clear" @click="clear(plan)" >
                       <md-icon>clear</md-icon>
-                    </md-button>
+                    </md-button> -->
 									</md-field> 
                   </md-table-cell>
-        <md-table-cell class="w-160">
+        <md-table-cell >
               <div class="md-layout-item" >
                   <md-field>		
 													<md-select v-model="plan.scheduledDate" md-dense >
@@ -248,8 +247,8 @@
                </div>
            </md-table-cell>
         <md-table-cell> 
-               	<md-field>									
-										<md-input v-model="plan.remark" ></md-input>
+               	<md-field data-md-clearable>									
+										<md-textarea v-model="plan.remark" md-autogrow> </md-textarea>
 									</md-field> 
            </md-table-cell>
 
@@ -278,7 +277,8 @@
 	</md-table-cell>								
     
       </md-table-row>
- </transition-group>
+       </md-table>
+ <!-- </transition-group> -->
 
 
 		<div class="action text-r">
@@ -503,7 +503,7 @@ this.schedules = this.getSampleData();
             if(element['title'] && element['title'].replace(/(^\s*)|(\s*$)/g,"") ){           
               resolve('resolve3');
             } else {
-              this.setShowSnackbar({bMsg:'下周计划没有填写完整'});	
+              this.setShowSnackbar({bMsg:'下周计划 没有填写完整'});	
               reject('reject3');
             }
           });
@@ -559,7 +559,7 @@ this.schedules = this.getSampleData();
              
               resolve('resolve5');
             } else {
-              this.setShowSnackbar({bMsg:'额外任务信息未填写完整,请检查'}); 
+              this.setShowSnackbar({bMsg:'本周额外任务 未填写完整,请检查'}); 
               reject('reject5');
           
             }
@@ -571,7 +571,7 @@ this.schedules = this.getSampleData();
       // end --
     } )
 
-      var promiseAll = Promise.all( [promise1, promise2, promise3] );
+      var promiseAll = Promise.all( [promise3, promise2, promise1] );
 
       var _this = this;
       promiseAll.then((res)=>{
@@ -615,7 +615,7 @@ this.schedules = this.getSampleData();
         }
         
       });
-      console.log('this.nextWeekDays',this.nextWeekDays);
+      // console.log('this.nextWeekDays',this.nextWeekDays);
 
     },
     getSchedules(){
@@ -676,11 +676,11 @@ this.schedules = this.getSampleData();
               element['scheduledDate'] = element['scheduledDate'];
               element['finishDate'] = element['scheduledDate'];
               if(!element['percent'] || !element['percent'].length){
-                element['percent'] = 0;
+                element['percent'] = '?';
               }
 
               if(!element['remark'] || element['remark'] == 'null'){
-                element['remark'] = ' ';
+                element['remark'] = '';
               }
           });
    
@@ -749,37 +749,37 @@ this.schedules = this.getSampleData();
       this.schedules[taskType].splice(index, 1);
     },
     clearTask(taskType,index) {
-      this.schedules[taskType][index].title = " ";
+      this.schedules[taskType][index].title = "";
       this.schedules[taskType][index].percent = '?';
-      this.schedules[taskType][index].remark = " ";
+      this.schedules[taskType][index].remark = "";
     },
     getSampleData(type){
 
       if(type == 'tasks'){
         return {
-                      title: " ",
+                      title: "",
                         scheduledDate: this.currentWeekDays[0].dateStr,
                         percent: '?',
                         finishDate: this.currentWeekDays[0].dateStr,
-                        remark: " "
+                        remark: ""
                       }
 
       }
       if(type == 'plans'){
         return {
-                  title: " ",
+                  title: "",
                   scheduledDate: this.nextWeekDays[0].dateStr,
-                  remark: " "
+                  remark: ""
                 }
 
 
       }
       if(type == 'extraTasks'){
         return  {
-                  title: " ",
+                  title: "",
                   hours: "2",
                   finishDate: this.currentWeekDays[0].dateStr,
-                  remark: " "
+                  remark: ""
                 }
 
 
@@ -787,11 +787,11 @@ this.schedules = this.getSampleData();
       return {
           tasks:[
                   {
-                      title: " ",
+                      title: "",
                         scheduledDate: this.currentWeekDays[0].dateStr,
                         percent: '?',
                         finishDate: this.currentWeekDays[0].dateStr,
-                        remark: " "
+                        remark: ""
                       }
                     ],          
           extraTasks:[
@@ -799,9 +799,9 @@ this.schedules = this.getSampleData();
               ],
           plans:[
                 {
-                  title: " ",
+                  title: "",
                   scheduledDate: this.nextWeekDays[0].dateStr,
-                  remark: " "
+                  remark: ""
                 }
               ]
           }
@@ -973,7 +973,9 @@ li {
 a {
   color: #42b983;
 } */
+
 .task {
+  /*
   .list-enter-active,
   .list-leave-active {
     transition: all 0.3s;
@@ -984,15 +986,12 @@ a {
     transform: translateY(30px);
  
   }
-  .list-move {
+   .list-move {
     transition: all 1s;
   }
   .list-move-active {
     position: absolute;
-  }
-  .report-table li {
-  }
-
+  } */
 
   .action {
     margin-bottom: 25px;
@@ -1027,6 +1026,7 @@ a {
     line-height: 30px;
   }
   input.drop:hover {
+    
   }
 }
 </style>
