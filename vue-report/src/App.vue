@@ -11,7 +11,7 @@
 
     <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="bMsg.show" :md-persistent="true">
 		<span>{{bMsg.title}}</span>
-      <md-button class="md-primary md-raised" @click="closebar">忽略</md-button>
+      <md-button class="md-primary md-raised" @click="closebar">知道了</md-button>
     </md-snackbar>
 
     <md-dialog :md-active.sync="dialogAlert.active">

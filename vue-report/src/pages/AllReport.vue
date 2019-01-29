@@ -66,8 +66,9 @@
         <md-tooltip md-direction="right"> 刷新 </md-tooltip>
       </md-button>
 
-      <md-button class="md-raised" @click="haveNotHanded">
-          谁没交周报
+			 <md-button class="md-icon-button  md-primary " @click="haveNotHanded">
+        <md-icon>visibility</md-icon>
+        <md-tooltip md-direction="right"> 谁没交周报 </md-tooltip>
       </md-button>
 
       <span class="count" v-show="reportsByPerson.length > 0" 

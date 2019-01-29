@@ -21,7 +21,7 @@
       </md-table-toolbar>
                     <md-table-row v-bind:key="15">
 										<md-table-head> </md-table-head> 
-                            <md-table-head>内容</md-table-head>  <md-table-head>计划日期</md-table-head>  <md-table-head>百分比</md-table-head>  <md-table-head>完成日期</md-table-head> <md-table-head>备注 </md-table-head> <md-table-head>操作</md-table-head>
+                            <md-table-head>内容</md-table-head>  <md-table-head>计划完成日期</md-table-head>  <md-table-head>百分比</md-table-head>  <md-table-head>实际完成日期</md-table-head> <md-table-head>备注 </md-table-head> <md-table-head>操作</md-table-head>
                     </md-table-row>
 
 										 
@@ -294,7 +294,7 @@
        
 
 
-    <h3 v-show="isPosted" >你本周的周报已提交成功,现在可以修改</h3>
+    <h3 v-show="isPosted" >本周的周报已提交成功,现在可以修改</h3>
 
     	<p class="text-center">
 	
@@ -525,8 +525,33 @@ this.schedules = this.getSampleData();
             
             //  && element['percent'] 
             if(element['title'] && element['title'].replace(/(^\s*)|(\s*$)/g,"") && element['percent'] != '?'){
+							
+						/*
+							//如果是修改bug项,提示 备注bug id
+							if(element['title'].toLowerCase().indexOf('bug') != -1 && element['title'].indexOf('修改') != -1){
+								//检查备是否为空
+								if(element['remark'] && element['remark'].length > 1){
+										taskCount += 1;
+									} else {
 
-              taskCount += 1;
+											let curTaskIndex = parseInt(index)+1;
+											this.setShowSnackbar({bMsg:'修改bug的任务,请备注bugId'});
+											this.twinkle(index,'tasks');     
+											document.body.scrollTop = 0;
+											document.documentElement.scrollTop = 0;
+											reject('reject44');
+											throw new Error('#3332');
+											
+										}
+							
+							} else {
+							*/
+							
+								taskCount += 1;
+								/*
+							}
+							*/
+
               
             } else {
                 let curTaskIndex = parseInt(index)+1;
