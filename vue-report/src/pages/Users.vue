@@ -37,7 +37,7 @@
         <md-table-cell md-label="性别"  >{{ item.gender == 1 ? '男' : '女' }}</md-table-cell>
         <md-table-cell md-label="所在小组"  >{{ item.team }}</md-table-cell>
         <md-table-cell md-label="所在部门"  >{{ item.department }}</md-table-cell>
-        <md-table-cell md-label="手机号码"  >{{ item.phone }}</md-table-cell>
+        <md-table-cell md-label="入职日期"  >{{ item.onboardingDate }}</md-table-cell>
   
         <md-table-cell md-label="状态"  >{{ item.status == 1 ? '正常' : '禁用' }}</md-table-cell>
         
@@ -135,6 +135,13 @@
             <!-- md-gutter end -->
 
              <div class="md-layout md-gutter" v-if="status == 'edit'">
+
+               
+           <div class="md-layout-item md-size-100">       
+                <label >入职日期</label>
+                 <md-datepicker  v-model="form.onboardingDate" /> 
+            </div>
+
              
               <div class="md-layout-item md-small-size-100">
                     <md-field>
@@ -143,13 +150,14 @@
                   </md-field>
               </div>
 
-               <div class="md-layout-item md-small-size-100">
+            <div class="md-layout-item md-small-size-100">
              <md-field >
                 <label for="phone">电话号码</label>
                 <md-input type="number" id="phone"   v-model="form.phone"/>
             
               </md-field>
             </div>
+
 
   
             </div>      
@@ -411,6 +419,7 @@ export default {
       },
       updateUser () {
         this.sending = true 
+        // this.form.onboardingDate = this.String;
         var data = this.$qs.stringify(this.form);
         this.$axios.post('./index.php/user/complete',
           data,
@@ -470,6 +479,7 @@ export default {
   }
 .md-dialog.user-form {
  min-width: 550px;
+  max-height: 100%;
 
 }
 </style>

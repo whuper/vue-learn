@@ -336,9 +336,6 @@ export default {
       isSubmiting:false,
       showConfirm:false,
       percentList:[90,80,70,60,100,'?',0,50,40,30,20,10]
-      //percentList:[0,10,20,30,40,50,60,70,80,90,100]
-      //weekNumber:0,
-      //isPosted:false
     };
   },
   computed: {
@@ -365,14 +362,25 @@ export default {
 
     console.log('task mounted');
     EventBus.$on('ready',()=>{
-      console.log('get ready');     
+      // console.log('get ready');     
 
       //this.getSchedules();
 
     })
+    let curDate = new Date();
 
-    
-    this.currentWeekDays = this.getWeekDays(new Date());
+    //如果是周日,周日按每周最后一天算
+    if(curDate.getDay() == 0){
+        let curDateObj = this.formatDate(curDate);
+        curDate = curDateObj['dateStr'];        
+        let prevDate = this.addDate(curDate,-7);  
+        this.currentWeekDays = this.getWeekDays(new Date(prevDate));
+
+    } else {
+      this.currentWeekDays = this.getWeekDays(new Date());
+
+    }    
+  
 
     let nextDate = this.addDate(this.currentWeekDays[0]['dateStr'],7);   
     

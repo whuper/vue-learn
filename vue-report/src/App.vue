@@ -139,7 +139,6 @@ export default {
 		},
 		setData(){
 			var weekNumber = this.getWeekOfYear();
-			// console.log('weekNumber',weekNumber);
 			
 			this.$store.commit('updateWeekNumber_req',weekNumber); 
 		},

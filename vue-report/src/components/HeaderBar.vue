@@ -9,7 +9,7 @@
         <md-icon>menu</md-icon>
       </md-button>
       <span class="md-title">  <md-icon v-show="!userInfo.userName" >sentiment_very_satisfied</md-icon> 
-				{{ title}} </span>
+				{{ title}}</span>
 
    <div class="md-toolbar-section-end">
         <md-button @click="setShowToolBar(false)"> <md-icon>expand_less</md-icon> 
