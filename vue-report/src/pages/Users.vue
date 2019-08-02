@@ -139,7 +139,7 @@
                
            <div class="md-layout-item md-size-100">       
                 <label >入职日期</label>
-                 <md-datepicker  v-model="form.onboardingDate" /> 
+                 <md-datepicker v-model="form.onboardingDate" /> 
             </div>
 
              
@@ -347,6 +347,16 @@ export default {
     
     
     },
+		convertUTCTimeToLocalTime(UTCDateString){
+
+			  var date2 = new Date(UTCDateString);
+        var year = date2.getFullYear();
+        var mon = date2.getMonth() + 1;
+        var day = date2.getDate();
+				
+				 var dateStr = year+'-'+mon+'-'+day;
+        return dateStr;
+		},
     showEdit(){
         this.showDialog = true;
         this.status = 'edit';
@@ -420,6 +430,7 @@ export default {
       updateUser () {
         this.sending = true 
         // this.form.onboardingDate = this.String;
+				this.form.onboardingDate = this.convertUTCTimeToLocalTime(this.form.onboardingDate);
         var data = this.$qs.stringify(this.form);
         this.$axios.post('./index.php/user/complete',
           data,
